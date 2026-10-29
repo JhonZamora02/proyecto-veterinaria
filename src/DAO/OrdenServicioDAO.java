@@ -14,7 +14,7 @@ public class OrdenServicioDAO {
     private final MySQLConnection db = new MySQLConnection();
 
     // ======================================================
-    // GUARDAR ORDEN DE SERVICIO
+    // GUARDAR ORDEN (estado por defecto: EN PROCESO)
     // ======================================================
     public int guardarOrden(OrdenServicio orden) {
         int idGenerado = 0;
@@ -32,10 +32,14 @@ public class OrdenServicioDAO {
             ps.setInt(3, orden.getIdVeterinario());
             ps.setInt(4, orden.getIdMascota());
             ps.setString(5, orden.getPropietario() != null ? orden.getPropietario() : "");
-            ps.setString(6, orden.getEstado() != null ? orden.getEstado() : "Activo");
+
+            // Estado: EN PROCESO
+            ps.setString(6, "En proceso");
+
             ps.setDouble(7, orden.getTotal());
             ps.setDouble(8, orden.getAbono());
             ps.setDouble(9, orden.getSaldo());
+
             ps.setString(10, orden.getObservaciones() != null ? orden.getObservaciones() : "");
             ps.setString(11, "");
             ps.setString(12, orden.getUsuarioCreador() != null ? orden.getUsuarioCreador() : "");
@@ -54,86 +58,148 @@ public class OrdenServicioDAO {
     }
 
     // ======================================================
-    // LISTAR ÓRDENES DE SERVICIO
+    // LISTAR ÓRDENES SEGÚN LOS FILTROS
     // ======================================================
     public List<OrdenServicio> listarOrdenes(
             java.util.Date fechaInicio,
             java.util.Date fechaFin,
-            String nombreVeterinario,
             String numeroOrden,
-            String nombrePropietario
+            String estado,
+            String nombreVeterinario,
+            String nombreMascota,
+            String nombreExamen
     ) {
 
         List<OrdenServicio> lista = new ArrayList<>();
 
-        StringBuilder sql = new StringBuilder(
-                "SELECT os.os_id, os.os_fecha, "
-                + "v.vet_nombre AS veterinario, v.vet_veterinaria AS veterinaria, "
-                + "m.mas_nombre AS mascota, os.os_mas_propietario AS propietario, "
-                + "os.os_valor_total AS total, os.os_abono AS abono, os.os_saldo AS saldo, "
-                + "os.os_estado AS estado "
-                + "FROM orden_servicio os "
-                + "INNER JOIN veterinario v ON v.vet_id = os.os_vet_id "
-                + "INNER JOIN mascota m ON m.mas_id = os.os_mas_id "
-                + "WHERE os.os_fecha BETWEEN ? AND ?"
-        );
+        boolean filtrandoExamen = (nombreExamen != null && !nombreExamen.isEmpty());
 
-        if (nombreVeterinario != null && !nombreVeterinario.isEmpty()) {
-            sql.append(" AND v.vet_nombre LIKE ?");
+        StringBuilder sql = new StringBuilder();
+
+        if (filtrandoExamen) {
+            // ============================================================
+            // MODO 1: Filtrar por examen → UNA FILA POR EXAMEN
+            // ============================================================
+            sql.append(
+                    "SELECT "
+                    + "os.os_id, "
+                    + "os.os_fecha, "
+                    + "v.vet_nombre AS veterinario, "
+                    + "m.mas_nombre AS mascota, "
+                    + "e.exa_descripcion AS examen, "
+                    + "os.os_valor_total AS total, "
+                    + "os.os_abono AS abono, "
+                    + "os.os_saldo AS saldo, "
+                    + "os.os_estado AS estado "
+                    + "FROM orden_servicio_detalle d "
+                    + "INNER JOIN orden_servicio os ON os.os_id = d.dos_os_id "
+                    + "INNER JOIN veterinario v ON v.vet_id = os.os_vet_id "
+                    + "INNER JOIN mascota m ON m.mas_id = os.os_mas_id "
+                    + "INNER JOIN examen e ON e.exa_id = d.dos_exa_id "
+                    + "WHERE os.os_fecha BETWEEN ? AND ? "
+            );
+        } else {
+            // ============================================================
+            // MODO 2: Búsqueda normal (sin examen) → UNA FILA POR ORDEN
+            // ============================================================
+            sql.append(
+                    "SELECT "
+                    + "os.os_id, "
+                    + "os.os_fecha, "
+                    + "v.vet_nombre AS veterinario, "
+                    + "m.mas_nombre AS mascota, "
+                    + "(SELECT GROUP_CONCAT(e2.exa_descripcion SEPARATOR ', ') "
+                    + " FROM orden_servicio_detalle d2 "
+                    + " INNER JOIN examen e2 ON e2.exa_id = d2.dos_exa_id "
+                    + " WHERE d2.dos_os_id = os.os_id) AS examen, "
+                    + "os.os_valor_total AS total, "
+                    + "os.os_abono AS abono, "
+                    + "os.os_saldo AS saldo, "
+                    + "os.os_estado AS estado "
+                    + "FROM orden_servicio os "
+                    + "INNER JOIN veterinario v ON v.vet_id = os.os_vet_id "
+                    + "INNER JOIN mascota m ON m.mas_id = os.os_mas_id "
+                    + "WHERE os.os_fecha BETWEEN ? AND ? "
+            );
         }
 
+        // ---------------------------------------------------------
+        // Filtros dinámicos
+        // ---------------------------------------------------------
         if (numeroOrden != null && !numeroOrden.isEmpty()) {
             sql.append(" AND os.os_id = ?");
         }
-
-        if (nombrePropietario != null && !nombrePropietario.isEmpty()) {
-            sql.append(" AND os.os_mas_propietario LIKE ?");
+        if (estado != null && !estado.isEmpty()) {
+            sql.append(" AND os.os_estado = ?");
         }
+        if (nombreVeterinario != null && !nombreVeterinario.isEmpty()) {
+            sql.append(" AND v.vet_nombre LIKE ?");
+        }
+        if (nombreMascota != null && !nombreMascota.isEmpty()) {
+            sql.append(" AND m.mas_nombre LIKE ?");
+        }
+        if (filtrandoExamen) {
+            sql.append(" AND e.exa_descripcion = ?");
+        }
+
+        sql.append(" ORDER BY os.os_id ASC");
 
         try (Connection con = db.getConexion(); PreparedStatement ps = con.prepareStatement(sql.toString())) {
 
-            ps.setDate(1, new java.sql.Date(fechaInicio.getTime()));
-            ps.setDate(2, new java.sql.Date(fechaFin.getTime()));
+            int paramIndex = 1;
 
-            int paramIndex = 3;
+            ps.setDate(paramIndex++, new java.sql.Date(fechaInicio.getTime()));
+            ps.setDate(paramIndex++, new java.sql.Date(fechaFin.getTime()));
+
+            if (numeroOrden != null && !numeroOrden.isEmpty()) {
+                ps.setInt(paramIndex++, Integer.parseInt(numeroOrden));
+            }
+
+            if (estado != null && !estado.isEmpty()) {
+                ps.setString(paramIndex++, estado);
+            }
 
             if (nombreVeterinario != null && !nombreVeterinario.isEmpty()) {
                 ps.setString(paramIndex++, "%" + nombreVeterinario + "%");
             }
 
-            if (numeroOrden != null && !numeroOrden.isEmpty()) {
-                ps.setString(paramIndex++, numeroOrden);
+            if (nombreMascota != null && !nombreMascota.isEmpty()) {
+                ps.setString(paramIndex++, "%" + nombreMascota + "%");
             }
 
-            if (nombrePropietario != null && !nombrePropietario.isEmpty()) {
-                ps.setString(paramIndex++, "%" + nombrePropietario + "%");
+            if (filtrandoExamen) {
+                ps.setString(paramIndex++, nombreExamen);
             }
 
             ResultSet rs = ps.executeQuery();
+
             while (rs.next()) {
+
                 OrdenServicio o = new OrdenServicio();
                 o.setId(rs.getInt("os_id"));
                 o.setFecha(rs.getDate("os_fecha"));
                 o.setVeterinario(rs.getString("veterinario"));
-                o.setVeterinaria(rs.getString("veterinaria"));
                 o.setMascota(rs.getString("mascota"));
-                o.setPropietario(rs.getString("propietario"));
+
+                o.setNombreExamen(rs.getString("examen"));
+
                 o.setTotal(rs.getDouble("total"));
                 o.setAbono(rs.getDouble("abono"));
                 o.setSaldo(rs.getDouble("saldo"));
                 o.setEstado(rs.getString("estado"));
+
                 lista.add(o);
             }
 
         } catch (SQLException e) {
-            System.err.println("❌ Error al listar órdenes: " + e.getMessage());
+            System.err.println(" Error al listar órdenes: " + e.getMessage());
         }
 
         return lista;
     }
 
     // ======================================================
-    // OBTENER CABECERA DE UNA ORDEN POR ID
+    // CABECERA POR ID
     // ======================================================
     public OrdenServicio obtenerCabeceraPorId(int osId) {
         OrdenServicio o = null;
@@ -170,14 +236,14 @@ public class OrdenServicioDAO {
             }
 
         } catch (SQLException e) {
-            System.err.println(" Error al obtener cabecera de orden: " + e.getMessage());
+            System.err.println("Error al obtener cabecera de orden: " + e.getMessage());
         }
 
         return o;
     }
 
     // ======================================================
-    // OBTENER SIGUIENTE ID DISPONIBLE
+    // SIGUIENTE ID
     // ======================================================
     public int obtenerSiguienteId() {
         int siguienteId = 1;
@@ -196,32 +262,27 @@ public class OrdenServicioDAO {
         return siguienteId;
     }
 
+    // ======================================================
+    // ACTUALIZAR ESTADO
+    // ======================================================
     public boolean actualizarEstado(int osId, String nuevoEstado) {
-        Connection conn = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
 
-        try {
-            conn = MySQLConnection.getConexion();
+        try (Connection conn = MySQLConnection.getConexion()) {
 
-            // 1. PRIMERO VERIFICAR EL ESTADO ACTUAL
             String sqlVerificar = "SELECT os_estado FROM orden_servicio WHERE os_id = ?";
-            ps = conn.prepareStatement(sqlVerificar);
+            PreparedStatement ps = conn.prepareStatement(sqlVerificar);
             ps.setInt(1, osId);
-            rs = ps.executeQuery();
 
+            ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 String estadoActual = rs.getString("os_estado");
 
-                // Si ya está facturada, no permitir cambio
                 if ("Facturado".equalsIgnoreCase(estadoActual)
                         && "Facturado".equalsIgnoreCase(nuevoEstado)) {
-                    System.out.println("La orden ya está facturada. No se puede facturar nuevamente.");
                     return false;
                 }
             }
 
-            // 2. SI PASA LA VALIDACIÓN, ACTUALIZAR
             rs.close();
             ps.close();
 
@@ -230,27 +291,11 @@ public class OrdenServicioDAO {
             ps.setString(1, nuevoEstado);
             ps.setInt(2, osId);
 
-            int filasAfectadas = ps.executeUpdate();
-            return filasAfectadas > 0;
+            return ps.executeUpdate() > 0;
 
         } catch (SQLException e) {
             System.err.println("Error al actualizar estado: " + e.getMessage());
-            e.printStackTrace();
             return false;
-        } finally {
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (ps != null) {
-                    ps.close();
-                }
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
     }
 }

@@ -151,7 +151,7 @@ public class RazaDAO {
 
     //Obtener el nuevo ID
     public int obtenerSiguienteId() {
-        int siguienteId = 1; // Valor por defecto si no hay registros
+        int siguienteId = 1;
         String sql = "SELECT MAX(raza_id) FROM raza";
         try (Connection con = MySQLConnection.getConexion(); PreparedStatement ps = con.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
 

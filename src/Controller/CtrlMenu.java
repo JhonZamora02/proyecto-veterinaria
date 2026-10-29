@@ -13,7 +13,6 @@ import View.frmConcepto;
 import View.frmExamen;
 import View.frmOrdenServicio;
 import View.frmLogin; // Para cerrar sesión
-import View.frmTerceros;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -47,8 +46,6 @@ public class CtrlMenu implements ActionListener {
         this.vistaMenu.jmiConcepto.addActionListener(this);
         this.vistaMenu.jmiOrdenServicio.addActionListener(this);
         this.vistaMenu.jmiComprobanteEgreso.addActionListener(this);
-        this.vistaMenu.jmiComprobanteEgreso.addActionListener(this);
-        this.vistaMenu.jmiTercero.addActionListener(this);
         //this.vistaMenu.jmCerrarSesion.addActionListener(this);
         this.vistaMenu.btnCerrarSesion.addActionListener(this);
 
@@ -109,10 +106,6 @@ public class CtrlMenu implements ActionListener {
 
         if (e.getSource() == vistaMenu.jmiOrdenServicio) {
             abrirOrdenServicio();
-        }
-        
-        if (e.getSource() == vistaMenu.jmiTercero) {
-            abrirTercero();
         }
 
         if (e.getSource() == vistaMenu.jmiComprobanteEgreso) {
@@ -212,14 +205,6 @@ public class CtrlMenu implements ActionListener {
         vista.setVisible(true);
         vistaMenu.dispose();
     }
-    
-    private void abrirTercero() {
-        frmTerceros vista = new frmTerceros();
-        CtrlTerceros ctrl = new CtrlTerceros(vista, this.vistaMenu, usuarioLogueado);
-        vista.setVisible(true);
-        vistaMenu.dispose();
-    }
-    
     private void cerrarSesion() {
 
         vistaMenu.dispose();

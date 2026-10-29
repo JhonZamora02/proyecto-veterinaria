@@ -17,32 +17,6 @@ public class UsuarioDAO {
 
     private final MySQLConnection db = new MySQLConnection();
 
-    // Crear nuevo Usuario
-    public boolean agregar(Usuario Usu) {
-        String sql = "INSERT INTO usuario (usu_id, usu_identificacion, usu_login, usu_pass, usu_nombre, usu_apellido, usu_email, usu_dir, usu_tel, usu_estado, per_id, img_firma) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
-        try (Connection con = db.getConexion(); PreparedStatement ps = con.prepareStatement(sql)) {
-
-            ps.setString(1, Usu.getUsu_id());
-            ps.setString(2, Usu.getUsu_identificacion());
-            ps.setString(3, Usu.getUsu_login());
-            ps.setString(4, Usu.getUsu_pass());
-            ps.setString(5, Usu.getUsu_nombre());
-            ps.setString(6, Usu.getUsu_apellido());
-            ps.setString(7, Usu.getUsu_email());
-            ps.setString(8, Usu.getUsu_dir());
-            ps.setString(9, Usu.getUsu_tel());
-            ps.setString(10, Usu.getUsu_estado());
-            ps.setString(11, Usu.getPer_id());
-            ps.setString(12, Usu.getImg_firma());
-            ps.execute();
-
-            return true;
-        } catch (SQLException e) {
-            System.err.println("Error agregar usuario: " + e.getMessage());
-            return false;
-        }
-    }
-
     // Listar todas los usuarios
     public List<Usuario> listar() {
         List<Usuario> lista = new ArrayList<>();
@@ -68,6 +42,32 @@ public class UsuarioDAO {
             System.err.println("Error listar usuarios: " + e.getMessage());
         }
         return lista;
+    }
+    
+    // Crear nuevo Usuario
+    public boolean agregar(Usuario Usu) {
+        String sql = "INSERT INTO usuario (usu_id, usu_identificacion, usu_login, usu_pass, usu_nombre, usu_apellido, usu_email, usu_dir, usu_tel, usu_estado, per_id, img_firma) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+        try (Connection con = db.getConexion(); PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, Usu.getUsu_id());
+            ps.setString(2, Usu.getUsu_identificacion());
+            ps.setString(3, Usu.getUsu_login());
+            ps.setString(4, Usu.getUsu_pass());
+            ps.setString(5, Usu.getUsu_nombre());
+            ps.setString(6, Usu.getUsu_apellido());
+            ps.setString(7, Usu.getUsu_email());
+            ps.setString(8, Usu.getUsu_dir());
+            ps.setString(9, Usu.getUsu_tel());
+            ps.setString(10, Usu.getUsu_estado());
+            ps.setString(11, Usu.getPer_id());
+            ps.setString(12, Usu.getImg_firma());
+            ps.execute();
+
+            return true;
+        } catch (SQLException e) {
+            System.err.println("Error agregar usuario: " + e.getMessage());
+            return false;
+        }
     }
 
     // Actualizar los usuarios

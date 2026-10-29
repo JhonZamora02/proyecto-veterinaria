@@ -56,8 +56,7 @@ public class OrdenServicioDetalleDAO {
     // ======================================================
     private int obtenerSiguienteId(Connection con) throws SQLException {
         String sql = "SELECT IFNULL(MAX(dos_id), 0) + 1 AS nuevoId FROM orden_servicio_detalle";
-        try (PreparedStatement ps = con.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+        try (PreparedStatement ps = con.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
             if (rs.next()) {
                 return rs.getInt("nuevoId");
             }
@@ -77,8 +76,7 @@ public class OrdenServicioDetalleDAO {
                 + "INNER JOIN examen e ON e.exa_id = d.dos_exa_id "
                 + "WHERE d.dos_os_id = ?";
 
-        try (Connection con = MySQLConnection.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = MySQLConnection.getConexion(); PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, idOrden);
 
@@ -120,8 +118,7 @@ public class OrdenServicioDetalleDAO {
     // ======================================================
     public boolean eliminarPorOrden(int idOrden) {
         String sql = "DELETE FROM orden_servicio_detalle WHERE dos_os_id = ?";
-        try (Connection con = MySQLConnection.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = MySQLConnection.getConexion(); PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, idOrden);
             int filas = ps.executeUpdate();
@@ -133,5 +130,5 @@ public class OrdenServicioDetalleDAO {
             return false;
         }
     }
-    
+
 }

@@ -24,7 +24,7 @@ public class MascotaDAO {
             }
         } catch (SQLException e) {
             System.err.println("Error verificar existencia de mascota: " + e.getMessage());
-            return true; // si hay error, asumimos que existe para no duplicar
+            return true;
         }
     }
 

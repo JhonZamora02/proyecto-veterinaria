@@ -184,9 +184,8 @@
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Component id="jlContraseña3" min="-2" max="-2" attributes="0"/>
                                       <Component id="jlContraseña4" min="-2" max="-2" attributes="0"/>
-                                      <Component id="jlContraseña6" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <EmptySpace min="18" pref="18" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Component id="cmbPerfil" min="-2" pref="200" max="-2" attributes="0"/>
                                       <Component id="txtEstado" alignment="0" min="-2" pref="202" max="-2" attributes="0"/>
@@ -218,7 +217,6 @@
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Component id="btnRegistrarse" pref="210" max="32767" attributes="0"/>
                               <Component id="btnActualizar" pref="210" max="32767" attributes="0"/>
-                              <Component id="btnSeleccionar" alignment="0" max="32767" attributes="0"/>
                               <Component id="btnEstado" alignment="0" pref="210" max="32767" attributes="0"/>
                               <Component id="btnLimpiar" alignment="0" pref="210" max="32767" attributes="0"/>
                           </Group>
@@ -272,11 +270,7 @@
                               <Component id="jlContraseña4" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jlContraseña6" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="btnSeleccionar" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
-                              <Component id="jlImagen" alignment="3" min="-2" pref="54" max="-2" attributes="0"/>
-                          </Group>
+                          <Component id="jlImagen" min="-2" pref="54" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="3" attributes="0">
@@ -534,25 +528,6 @@
           </SubComponents>
         </Container>
         <Component class="javax.swing.JPasswordField" name="txtContrase&#xf1;a">
-          <AuxValues>
-            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
-          </AuxValues>
-        </Component>
-        <Component class="javax.swing.JLabel" name="jlContrase&#xf1;a6">
-          <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Tahoma" size="20" style="1"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="Imagen:"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JButton" name="btnSeleccionar">
-          <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Tahoma" size="12" style="1"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="SELECCIONAR"/>
-          </Properties>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
           </AuxValues>

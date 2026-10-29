@@ -243,7 +243,7 @@ public class CtrlMascota implements ActionListener {
     private void inicializarConsecutivoId() {
         int siguienteId = daoMascota.obtenerSiguienteId();
         vistaMascota.txtIdMas.setText(String.valueOf(siguienteId));
-        vistaMascota.txtIdMas.setEnabled(false); // Recomendado para evitar que el usuario lo modifique
+        vistaMascota.txtIdMas.setEnabled(false);
     }
 
     private void limpiarCampos() {

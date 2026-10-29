@@ -57,8 +57,6 @@ public class frmUsuario extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jtbList = new javax.swing.JTable();
         txtContraseña = new javax.swing.JPasswordField();
-        jlContraseña6 = new javax.swing.JLabel();
-        btnSeleccionar = new javax.swing.JButton();
         jlImagen = new javax.swing.JLabel();
         btnEstado = new javax.swing.JButton();
         btnLimpiar = new javax.swing.JButton();
@@ -164,12 +162,6 @@ public class frmUsuario extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(jtbList);
 
-        jlContraseña6.setFont(new java.awt.Font("Tahoma", 1, 20)); // NOI18N
-        jlContraseña6.setText("Imagen:");
-
-        btnSeleccionar.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        btnSeleccionar.setText("SELECCIONAR");
-
         btnEstado.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         btnEstado.setText("ACTIVO / INACTIVO");
 
@@ -223,9 +215,8 @@ public class frmUsuario extends javax.swing.JFrame {
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jlContraseña3)
-                                    .addComponent(jlContraseña4)
-                                    .addComponent(jlContraseña6))
-                                .addGap(18, 18, 18)
+                                    .addComponent(jlContraseña4))
+                                .addGap(30, 30, 30)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(cmbPerfil, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -249,7 +240,6 @@ public class frmUsuario extends javax.swing.JFrame {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(btnRegistrarse, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
                             .addComponent(btnActualizar, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
-                            .addComponent(btnSeleccionar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnEstado, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
                             .addComponent(btnLimpiar, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE))))
                 .addGap(20, 20, 20))
@@ -290,10 +280,7 @@ public class frmUsuario extends javax.swing.JFrame {
                             .addComponent(cmbPerfil, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jlContraseña4))
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jlContraseña6)
-                            .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jlImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jlImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -386,7 +373,6 @@ public class frmUsuario extends javax.swing.JFrame {
     public javax.swing.JButton btnLimpiar;
     public javax.swing.JButton btnRegistrarse;
     public javax.swing.JButton btnRegresa;
-    public javax.swing.JButton btnSeleccionar;
     public javax.swing.JComboBox<Perfil> cmbPerfil;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
@@ -398,7 +384,6 @@ public class frmUsuario extends javax.swing.JFrame {
     private javax.swing.JLabel jlContraseña3;
     private javax.swing.JLabel jlContraseña4;
     private javax.swing.JLabel jlContraseña5;
-    private javax.swing.JLabel jlContraseña6;
     public javax.swing.JLabel jlImagen;
     private javax.swing.JLabel jlUsuario;
     private javax.swing.JLabel jlUsuario1;

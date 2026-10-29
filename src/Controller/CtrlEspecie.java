@@ -33,7 +33,7 @@ public class CtrlEspecie implements ActionListener {
         this.vistaEspecie.btnAgregarEspecie.addActionListener(this);
         this.vistaEspecie.btnActualizarEspecie.addActionListener(this);
         this.vistaEspecie.btnEstadoEspecie.addActionListener(this);
-        this.vistaEspecie.btnEliminarEspecie.addActionListener(this); // 👈 nuevo
+        this.vistaEspecie.btnEliminarEspecie.addActionListener(this);
         this.vistaEspecie.btnLimpiarEspecie.addActionListener(this);
         this.vistaEspecie.btnRegresa.addActionListener(this);
 
@@ -206,7 +206,7 @@ public class CtrlEspecie implements ActionListener {
     private void inicializarConsecutivoId() {
         int siguienteId = dao.obtenerSiguienteId();
         vistaEspecie.txtIdEspecie.setText(String.valueOf(siguienteId));
-        vistaEspecie.txtIdEspecie.setEnabled(false); // Recomendado para evitar que el usuario lo modifique
+        vistaEspecie.txtIdEspecie.setEnabled(false);
     }
 
     private void limpiar() {

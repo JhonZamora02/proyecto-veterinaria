@@ -11,11 +11,9 @@ import View.*;
 import java.awt.event.*;
 import java.io.FileOutputStream;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 
-// Importar solo lo necesario de java.util (evitar conflictos con OpenPDF)
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -26,26 +24,24 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.view.JasperViewer;
-
 import java.awt.Component;
 import java.awt.Color;
 import javax.swing.table.DefaultTableCellRenderer;
 
-// Librerias OpenPDF (importar solo clases necesarias)
+// Librerias OpenPDF
 import com.lowagie.text.Document;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.Phrase;
 import com.lowagie.text.Font;
 import com.lowagie.text.Element;
-
 import com.lowagie.text.pdf.PdfWriter;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfPCell;
-
+import java.sql.DriverManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.view.JasperViewer;
 
 public class CtrlOrdenServicioDetalle implements ActionListener {
 
@@ -53,6 +49,7 @@ public class CtrlOrdenServicioDetalle implements ActionListener {
     private final VeterinarioDAO daoVeterinario;
     private final MascotaDAO daoMascota;
     private final OrdenServicioDetalleDAO daoDetalle;
+    private final ExamenDAO daoExamen;
 
     private frmListarOrdenServicio vista;
     private frmMenu menuAnterior;
@@ -62,10 +59,13 @@ public class CtrlOrdenServicioDetalle implements ActionListener {
 
     // Constructor
     public CtrlOrdenServicioDetalle(frmListarOrdenServicio vista, frmMenu menuAnterior, String usuarioLogueado) {
+
         this.daoOrden = new OrdenServicioDAO();
         this.daoVeterinario = new VeterinarioDAO();
         this.daoMascota = new MascotaDAO();
         this.daoDetalle = new OrdenServicioDetalleDAO();
+        this.daoExamen = new ExamenDAO();
+
         this.vista = vista;
         this.menuAnterior = menuAnterior;
         this.usuarioLogueado = usuarioLogueado;
@@ -75,27 +75,29 @@ public class CtrlOrdenServicioDetalle implements ActionListener {
         vista.setTitle("Listado de Ordenes de Servicio - VetSoft v1.0");
 
         // Eventos
-        this.vista.btnRegresa.addActionListener(this);
-        this.vista.btnBuscar.addActionListener(this);
-        this.vista.btnVerDetalle.addActionListener(this);
-        this.vista.btnFacturar.addActionListener(this);
-        this.vista.btnExportarListar.addActionListener(this);
+        vista.btnRegresa.addActionListener(this);
+        vista.btnBuscar.addActionListener(this);
+        vista.btnVerDetalle.addActionListener(this);
+        vista.btnFacturar.addActionListener(this);
+        vista.btnExportarListar.addActionListener(this);
 
-        // Inicializacion
+        // Inicialización
+        cargarComboEstado();
         cargarComboVeterinarios();
-        cargarComboPropietarios();
+        cargarComboMascotas();
+        cargarComboExamenes();
         establecerFechasHoy();
         inicializarTabla();
 
-        // Colorear filas facturadas
+        // Colorear filas según estado (ahora columna Estado es índice 8)
         vista.tblOrdenes.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
             @Override
-            public Component getTableCellRendererComponent(JTable table, Object value,
-                    boolean isSelected, boolean hasFocus, int row, int column) {
+            public Component getTableCellRendererComponent(
+                    JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 
                 Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
-                String estado = table.getValueAt(row, 9).toString();
+                String estado = table.getValueAt(row, 8).toString();
 
                 if ("Facturado".equalsIgnoreCase(estado)) {
                     if (!isSelected) {
@@ -116,7 +118,6 @@ public class CtrlOrdenServicioDetalle implements ActionListener {
         vista.lblRegistros.setText("Mostrando 0 registros.");
     }
 
-    // Eventos principales
     @Override
     public void actionPerformed(ActionEvent e) {
 
@@ -141,7 +142,19 @@ public class CtrlOrdenServicioDetalle implements ActionListener {
         }
     }
 
-    // Cargar combo de veterinarios
+    // ==============================================
+    // COMBOS
+    // ==============================================
+    // Estado: Todos, En proceso, Finalizado
+    private void cargarComboEstado() {
+        DefaultComboBoxModel<String> modelo = new DefaultComboBoxModel<>();
+        modelo.addElement("Todos");
+        modelo.addElement("En proceso");
+        modelo.addElement("Finalizado");
+        vista.cmbEstadoListar.setModel(modelo);
+        vista.cmbEstadoListar.setSelectedIndex(0);
+    }
+
     private void cargarComboVeterinarios() {
         DefaultComboBoxModel<String> modelo = new DefaultComboBoxModel<>();
         modelo.addElement("Todos");
@@ -156,39 +169,45 @@ public class CtrlOrdenServicioDetalle implements ActionListener {
         vista.cmbVeterinarioListar.setSelectedIndex(0);
     }
 
-    // Cargar combo de propietarios
-    private void cargarComboPropietarios() {
+    private void cargarComboMascotas() {
         DefaultComboBoxModel<String> modelo = new DefaultComboBoxModel<>();
         modelo.addElement("Todos");
 
-        Set<String> propietarios = new HashSet<>();
-
         for (Mascota m : daoMascota.listarTodas()) {
-            if (m.getPropietario() != null && !m.getPropietario().isEmpty()) {
-                propietarios.add(m.getPropietario());
+            if ("Activo".equalsIgnoreCase(m.getEstado())) {
+                modelo.addElement(m.getNombre());
             }
         }
 
-        for (String p : propietarios) {
-            modelo.addElement(p);
-        }
-
-        vista.cmbPropietarioListar.setModel(modelo);
-        vista.cmbPropietarioListar.setSelectedIndex(0);
+        vista.cmbMascotaListar.setModel(modelo);
+        vista.cmbMascotaListar.setSelectedIndex(0);
     }
 
-    // Asignar fecha actual
+    // Combo de exámenes: "Todos" + lista de exámenes activos
+    private void cargarComboExamenes() {
+        DefaultComboBoxModel<String> modelo = new DefaultComboBoxModel<>();
+        modelo.addElement("Todos");
+
+        for (Examen ex : daoExamen.listar()) {
+            if ("Activo".equalsIgnoreCase(ex.getEstado())) {
+                modelo.addElement(ex.getDescripcion());
+            }
+        }
+
+        vista.cmbExamenListar.setModel(modelo);
+        vista.cmbExamenListar.setSelectedIndex(0);
+    }
+
     private void establecerFechasHoy() {
         String hoy = sdf.format(new Date());
         vista.txtFechaInicio.setText(hoy);
         vista.txtFechaFin.setText(hoy);
     }
 
-    // Inicializar tabla
     private void inicializarTabla() {
         String[] columnas = {
-            "N° Orden", "Fecha", "Veterinario", "Veterinaria",
-            "Mascota", "Propietario", "Valor Total", "Abono", "Saldo", "Estado"
+            "No. Orden", "Fecha", "Veterinario", "Mascota",
+            "Examen", "Valor Total", "Abono", "Saldo", "Estado"
         };
 
         DefaultTableModel modelo = new DefaultTableModel(null, columnas) {
@@ -201,41 +220,59 @@ public class CtrlOrdenServicioDetalle implements ActionListener {
         vista.tblOrdenes.setModel(modelo);
     }
 
-    // Buscar ordenes
+    // ==============================================
+    // BUSCAR
+    // ==============================================
     private void buscarOrdenes() {
         try {
-            String fechaInicioStr = vista.txtFechaInicio.getText().trim();
-            String fechaFinStr = vista.txtFechaFin.getText().trim();
+            String fi = vista.txtFechaInicio.getText().trim();
+            String ff = vista.txtFechaFin.getText().trim();
 
-            if (fechaInicioStr.isEmpty() || fechaFinStr.isEmpty()) {
+            if (fi.isEmpty() || ff.isEmpty()) {
                 JOptionPane.showMessageDialog(vista, "Debe ingresar las fechas de inicio y fin.");
                 return;
             }
 
-            Date fechaInicio = sdf.parse(fechaInicioStr);
-            Date fechaFin = sdf.parse(fechaFinStr);
-
-            String veterinario = vista.cmbVeterinarioListar.getSelectedItem().toString();
-            if ("Todos".equalsIgnoreCase(veterinario)) veterinario = "";
-
-            String propietario = vista.cmbPropietarioListar.getSelectedItem().toString();
-            if ("Todos".equalsIgnoreCase(propietario)) propietario = "";
+            Date fechaInicio = sdf.parse(fi);
+            Date fechaFin = sdf.parse(ff);
 
             String numeroOrden = vista.txtNumero.getText().trim();
+            if (numeroOrden.isEmpty()) {
+                numeroOrden = null;
+            }
+
+            String estado = vista.cmbEstadoListar.getSelectedItem().toString();
+            if (estado.equals("Todos")) {
+                estado = null;
+            }
+
+            String veterinario = vista.cmbVeterinarioListar.getSelectedItem().toString();
+            if (veterinario.equals("Todos")) {
+                veterinario = null;
+            }
+
+            String mascota = vista.cmbMascotaListar.getSelectedItem().toString();
+            if (mascota.equals("Todos")) {
+                mascota = null;
+            }
+
+            String examen = vista.cmbExamenListar.getSelectedItem().toString();
+            if (examen.equals("Todos")) {
+                examen = null;
+            }
 
             List<OrdenServicio> lista = daoOrden.listarOrdenes(
-                    fechaInicio, fechaFin, veterinario, numeroOrden, propietario);
+                    fechaInicio, fechaFin, numeroOrden, estado, veterinario, mascota, examen
+            );
 
             cargarTabla(lista);
 
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(vista, "Error al buscar ordenes: " + e.getMessage());
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(vista, "Error al buscar: " + ex.getMessage());
         }
     }
 
-    // Cargar informacion en la tabla
     private void cargarTabla(List<OrdenServicio> lista) {
-
         DefaultTableModel modelo = (DefaultTableModel) vista.tblOrdenes.getModel();
         modelo.setRowCount(0);
 
@@ -245,25 +282,34 @@ public class CtrlOrdenServicioDetalle implements ActionListener {
         }
 
         for (OrdenServicio o : lista) {
+
+            // Asegurar que no haya valores nulos en pantalla
+            String examen = (o.getNombreExamen() == null) ? "" : o.getNombreExamen();
+            String veterinario = (o.getVeterinario() == null) ? "" : o.getVeterinario();
+            String mascota = (o.getMascota() == null) ? "" : o.getMascota();
+            String estado = (o.getEstado() == null) ? "" : o.getEstado();
+
             modelo.addRow(new Object[]{
                 o.getId(),
                 sdf.format(o.getFecha()),
-                o.getVeterinario(),
-                o.getVeterinaria(),
-                o.getMascota(),
-                o.getPropietario(),
+                veterinario,
+                mascota,
+                examen,
                 o.getTotal(),
                 o.getAbono(),
                 o.getSaldo(),
-                o.getEstado()
+                estado
             });
         }
 
         vista.lblRegistros.setText("Mostrando " + lista.size() + " registros encontrados.");
     }
 
-    // Ver detalle
+    // ==============================================
+    // VER DETALLE
+    // ==============================================
     private void verDetalleSeleccionado() {
+
         int fila = vista.tblOrdenes.getSelectedRow();
         if (fila == -1) {
             JOptionPane.showMessageDialog(vista, "Seleccione una orden.");
@@ -277,9 +323,9 @@ public class CtrlOrdenServicioDetalle implements ActionListener {
             vista.dispose();
 
             frmOrdenServicio vistaOrden = new frmOrdenServicio();
-            CtrlOrdenServicio ctrlOrden = new CtrlOrdenServicio(vistaOrden, menuAnterior, usuarioLogueado);
+            CtrlOrdenServicio ctrl = new CtrlOrdenServicio(vistaOrden, menuAnterior, usuarioLogueado);
 
-            ctrlOrden.mostrarOrdenEnVistaDesdeListado(
+            ctrl.mostrarOrdenEnVistaDesdeListado(
                     orden.getId(),
                     sdf.format(orden.getFecha()),
                     orden.getVeterinario(),
@@ -295,19 +341,21 @@ public class CtrlOrdenServicioDetalle implements ActionListener {
 
             vistaOrden.btnRegresa.addActionListener(ev -> {
                 vistaOrden.dispose();
-                frmListarOrdenServicio nuevaVista = new frmListarOrdenServicio();
-                CtrlOrdenServicioDetalle nuevoCtrl = new CtrlOrdenServicioDetalle(nuevaVista, menuAnterior, usuarioLogueado);
-                nuevaVista.setVisible(true);
+                frmListarOrdenServicio v2 = new frmListarOrdenServicio();
+                CtrlOrdenServicioDetalle c2 = new CtrlOrdenServicioDetalle(v2, menuAnterior, usuarioLogueado);
+                v2.setVisible(true);
             });
 
             vistaOrden.setVisible(true);
 
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(vista, "Error al abrir el detalle.");
+            JOptionPane.showMessageDialog(vista, "Error al abrir detalle: " + ex.getMessage());
         }
     }
 
-    // Facturar
+    // ==============================================
+    // FACTURAR ORDEN
+    // ==============================================
     private void facturarOrdenSeleccionada() {
         int fila = vista.tblOrdenes.getSelectedRow();
         
@@ -323,12 +371,12 @@ public class CtrlOrdenServicioDetalle implements ActionListener {
         try {
             // 2. OBTENER DATOS DE LA FILA SELECCIONADA
             int osId = Integer.parseInt(vista.tblOrdenes.getValueAt(fila, 0).toString());
-            String estadoActual = vista.tblOrdenes.getValueAt(fila, 9).toString().trim();
+            String estadoActual = vista.tblOrdenes.getValueAt(fila, 8).toString().trim();
 
             // 3. VALIDAR QUE NO ESTÉ YA FACTURADA
             if ("Facturado".equalsIgnoreCase(estadoActual)) {
                 JOptionPane.showMessageDialog(vista,
-                    "⚠️ Esta orden ya fue facturada previamente.\n\n" +
+                    "Esta orden ya fue facturada previamente.\n\n" +
                     "Orden N°: " + osId + "\n" +
                     "Estado: " + estadoActual + "\n\n" +
                     "No es posible facturar una orden más de una vez.",
@@ -338,7 +386,7 @@ public class CtrlOrdenServicioDetalle implements ActionListener {
             }
 
             // 4. VALIDAR QUE EL SALDO NO SEA CERO (OPCIONAL)
-            double saldo = toDoubleSafe(vista.tblOrdenes.getValueAt(fila, 8));
+            double saldo = toDoubleSafe(vista.tblOrdenes.getValueAt(fila, 7));
             if (saldo == 0) {
                 int continuar = JOptionPane.showConfirmDialog(vista,
                     "El saldo de esta orden es $0.00\n" +
@@ -365,7 +413,7 @@ public class CtrlOrdenServicioDetalle implements ActionListener {
                 "Orden N°: " + osId + "\n" +
                 "Estado Actual: " + estadoActual + "\n" +
                 "Nuevo Estado: Facturado\n\n" +
-                "⚠️ Esta acción NO se puede deshacer.",
+                "Esta acción NO se puede deshacer.",
                 "Confirmar Facturación",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE);
@@ -376,14 +424,14 @@ public class CtrlOrdenServicioDetalle implements ActionListener {
 
                 if (actualizado) {
                     JOptionPane.showMessageDialog(vista,
-                        "✓ La orden ha sido facturada exitosamente.\n\n" +
+                        "La orden ha sido facturada exitosamente.\n\n" +
                         "Orden N°: " + osId + "\n" +
                         "Nuevo Estado: Facturado",
                         "Facturación Exitosa",
                         JOptionPane.INFORMATION_MESSAGE);
 
                     // Actualizar la tabla para reflejar el cambio
-                    vista.tblOrdenes.setValueAt("Facturado", fila, 9);
+                    vista.tblOrdenes.setValueAt("Facturado", fila, 8);
                     
                     // Opcional: Cambiar color de la fila para indicar facturada
                     // vista.tblOrdenes.repaint();
@@ -420,7 +468,7 @@ public class CtrlOrdenServicioDetalle implements ActionListener {
             ex.printStackTrace();
         }
     }
-
+    
     // Jasper
     private boolean generarFacturaPDF(int osId) {
         Connection conn = null;
@@ -457,33 +505,40 @@ public class CtrlOrdenServicioDetalle implements ActionListener {
         }
     }
 
-    // Exportar listado a PDF
+    // ==============================================
+    // EXPORTAR LISTADO A PDF
+    // ==============================================
     private void exportarPDF_Listado() {
+
         try {
             DefaultTableModel modelo = (DefaultTableModel) vista.tblOrdenes.getModel();
 
             if (modelo.getRowCount() == 0) {
-                JOptionPane.showMessageDialog(vista, "No hay informacion para exportar.");
+                JOptionPane.showMessageDialog(vista, "No hay información para exportar.");
                 return;
             }
 
             String fechaIni = vista.txtFechaInicio.getText();
             String fechaFin = vista.txtFechaFin.getText();
 
-            String nombreArchivo = System.getProperty("user.home") + "/Downloads/Listado_OrdenesDeServicio" + fechaIni + "_" + fechaFin + ".pdf";
+            String nombreArchivo = System.getProperty("user.home")
+                    + "/Downloads/Listado_OrdenesDeServicio_"
+                    + fechaIni + "_" + fechaFin + ".pdf";
 
             Document doc = new Document(PageSize.A4.rotate());
             PdfWriter.getInstance(doc, new FileOutputStream(nombreArchivo));
             doc.open();
 
-            Paragraph titulo = new Paragraph("Reporte Consolidado de Ordenes de Servicio",
-                    new Font(Font.HELVETICA, 16, Font.BOLD));
+            Paragraph titulo = new Paragraph(
+                    "Reporte Consolidado de Órdenes de Servicio",
+                    new Font(Font.HELVETICA, 16, Font.BOLD)
+            );
             titulo.setAlignment(Element.ALIGN_CENTER);
             doc.add(titulo);
 
             doc.add(new Paragraph(" "));
             doc.add(new Paragraph("Periodo de consulta:"));
-            doc.add(new Paragraph("Desde: " + fechaIni + " - Fecha fin: " + fechaFin));
+            doc.add(new Paragraph("Desde: " + fechaIni + " - Hasta: " + fechaFin));
             doc.add(new Paragraph(" "));
 
             PdfPTable tabla = new PdfPTable(modelo.getColumnCount());
@@ -502,19 +557,21 @@ public class CtrlOrdenServicioDetalle implements ActionListener {
             doc.add(tabla);
             doc.close();
 
-            JOptionPane.showMessageDialog(vista, "Reporte exportado en Descargas.");
+            JOptionPane.showMessageDialog(vista, "PDF exportado en Descargas.");
 
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(vista, "Error al exportar PDF: " + e.getMessage());
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(vista, "Error al exportar PDF: " + ex.getMessage());
         }
     }
 
-    // Regresar
+    // ==============================================
+    // REGRESAR
+    // ==============================================
     private void regresarAOrdenServicio() {
         vista.dispose();
-        frmOrdenServicio vistaOrden = new frmOrdenServicio();
-        new CtrlOrdenServicio(vistaOrden, menuAnterior, usuarioLogueado);
-        vistaOrden.setVisible(true);
+        frmOrdenServicio v = new frmOrdenServicio();
+        new CtrlOrdenServicio(v, menuAnterior, usuarioLogueado);
+        v.setVisible(true);
     }
 
     // Auxiliar

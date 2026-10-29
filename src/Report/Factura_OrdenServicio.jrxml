@@ -152,90 +152,90 @@ ORDER BY d.dos_id ASC]]></query>
 		<element kind="rectangle" uuid="d5e4377c-9975-468d-a38d-9bc2caffb64a" x="229" y="69" width="340" height="71" forecolor="#000000">
 			<pen lineWidth="2.0"/>
 		</element>
-		<element kind="image" uuid="438eef56-c421-45bc-8d82-00c34a197049" x="10" y="10" width="209" height="120" linkType="None" linkTarget="Self">
-			<expression><![CDATA["C:/Users/JasonStevenCaicedoCo/OneDrive - 900053370_AFFI SAS/Documentos/NetBeansProjects/Proyecto_Veterinario/src/Imagenes/logo.png"]]></expression>
-		</element>
-		<element kind="staticText" uuid="268c07e5-1d43-476c-9c89-883474c37dc6" x="229" y="0" width="338" height="68" markup="none" fontName="Tahoma" fontSize="14.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+		<element kind="staticText" uuid="268c07e5-1d43-476c-9c89-883474c37dc6" x="229" y="0" width="338" height="68" markup="none" fontName="Arial" fontSize="14.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
 			<text><![CDATA[CALIDAD, PROFESIONALISMO Y CONFIANZA
 ES NUESTRO MAYOR COMPROMISO]]></text>
 		</element>
-		<element kind="staticText" uuid="c3ef77e7-ebf1-45b9-837e-745e2772aeec" x="240" y="69" width="326" height="68" markup="none" fontName="Tahoma" fontSize="12.0" bold="false" hTextAlign="Left" vTextAlign="Middle">
+		<element kind="staticText" uuid="c3ef77e7-ebf1-45b9-837e-745e2772aeec" x="235" y="68" width="334" height="72" markup="none" fontName="Arial" fontSize="12.0" bold="false" hTextAlign="Left" vTextAlign="Middle">
 			<paragraph lineSpacingSize="1.0"/>
 			<text><![CDATA[Direccion: Calle 13 No. 65 - 32 Piso 2 B/Limonar
 Telefono: (2) 376 7075
 Email: vetsoft@gmail.com]]></text>
 		</element>
+		<element kind="image" uuid="11e4a05b-6ed0-44a3-8d2b-8fa0dcfe8c4b" x="10" y="10" width="216" height="120">
+			<expression><![CDATA["src/Imagenes/logo.png"]]></expression>
+		</element>
 		<property name="com.jaspersoft.studio.unit.height" value="px"/>
 	</title>
 	<pageHeader height="250" splitType="Stretch">
-		<element kind="staticText" uuid="e729fa86-b33a-4077-8b98-951ea244c66f" x="40" y="10" width="58" height="30" markup="none" fontName="Tahoma" fontSize="12.0" bold="false" hTextAlign="Left" vTextAlign="Middle">
+		<element kind="staticText" uuid="e729fa86-b33a-4077-8b98-951ea244c66f" x="40" y="10" width="58" height="30" markup="none" fontName="Arial" fontSize="12.0" bold="false" hTextAlign="Left" vTextAlign="Middle">
 			<paragraph lineSpacingSize="1.0"/>
 			<text><![CDATA[Orden No:]]></text>
 		</element>
-		<element kind="textField" uuid="ed620c9a-e099-40b2-af8d-77cff7fae4d5" x="110" y="10" width="70" height="30" markup="none" fontName="Tahoma&#xd;&#xa;&#xd;&#xa;" fontSize="12.0" hTextAlign="Left" vTextAlign="Middle">
+		<element kind="textField" uuid="ed620c9a-e099-40b2-af8d-77cff7fae4d5" x="110" y="10" width="70" height="30" markup="none" fontName="Arial" fontSize="12.0" hTextAlign="Left" vTextAlign="Middle">
 			<expression><![CDATA[$F{os_id}]]></expression>
 		</element>
-		<element kind="staticText" uuid="340c364b-5c6a-43ca-819a-3a9b7af8b49b" x="260" y="10" width="90" height="30" markup="none" fontName="Tahoma" fontSize="12.0" bold="false" hTextAlign="Left" vTextAlign="Middle">
+		<element kind="staticText" uuid="340c364b-5c6a-43ca-819a-3a9b7af8b49b" x="260" y="10" width="90" height="30" markup="none" fontName="Arial" fontSize="12.0" bold="false" hTextAlign="Left" vTextAlign="Middle">
 			<paragraph lineSpacingSize="1.0"/>
 			<text><![CDATA[Fecha Toma:]]></text>
 		</element>
-		<element kind="textField" uuid="8e705c31-1983-42fe-8221-922cb64d09d7" x="358" y="10" width="209" height="30" markup="none" fontName="Tahoma&#xd;&#xa;" fontSize="12.0" hTextAlign="Left" vTextAlign="Middle">
+		<element kind="textField" uuid="8e705c31-1983-42fe-8221-922cb64d09d7" x="358" y="10" width="209" height="30" markup="none" fontName="Arial" fontSize="12.0" hTextAlign="Left" vTextAlign="Middle">
 			<expression><![CDATA[$F{os_fecha}]]></expression>
 		</element>
-		<element kind="staticText" uuid="33267c73-3887-4611-9338-9b7cecf287d3" x="40" y="50" width="50" height="30" markup="none" fontName="Tahoma" fontSize="12.0" bold="false" hTextAlign="Left" vTextAlign="Middle">
+		<element kind="staticText" uuid="33267c73-3887-4611-9338-9b7cecf287d3" x="40" y="50" width="50" height="30" markup="none" fontName="Arial" fontSize="12.0" bold="false" hTextAlign="Left" vTextAlign="Middle">
 			<paragraph lineSpacingSize="1.0"/>
 			<text><![CDATA[Nombre:]]></text>
 		</element>
-		<element kind="staticText" uuid="bad0079a-cb93-43cf-932f-202a200a948f" x="38" y="90" width="51" height="30" markup="none" fontName="Tahoma" fontSize="12.0" bold="false" hTextAlign="Left" vTextAlign="Middle">
+		<element kind="staticText" uuid="bad0079a-cb93-43cf-932f-202a200a948f" x="38" y="90" width="51" height="30" markup="none" fontName="Arial" fontSize="12.0" bold="false" hTextAlign="Left" vTextAlign="Middle">
 			<paragraph lineSpacingSize="1.0"/>
 			<text><![CDATA[Especie:]]></text>
 		</element>
-		<element kind="staticText" uuid="06001870-25af-41d8-ab52-ef894801e750" x="38" y="130" width="42" height="30" markup="none" fontName="Tahoma" fontSize="12.0" bold="false" hTextAlign="Left" vTextAlign="Middle">
+		<element kind="staticText" uuid="06001870-25af-41d8-ab52-ef894801e750" x="38" y="130" width="42" height="30" markup="none" fontName="Arial" fontSize="12.0" bold="false" hTextAlign="Left" vTextAlign="Middle">
 			<paragraph lineSpacingSize="1.0"/>
 			<text><![CDATA[Raza:]]></text>
 		</element>
-		<element kind="staticText" uuid="e37843b9-fd3b-42ef-a51d-3b04f6080f10" x="260" y="90" width="70" height="30" markup="none" fontName="Tahoma" fontSize="12.0" bold="false" hTextAlign="Left" vTextAlign="Middle">
+		<element kind="staticText" uuid="e37843b9-fd3b-42ef-a51d-3b04f6080f10" x="260" y="90" width="70" height="30" markup="none" fontName="Arial" fontSize="12.0" bold="false" hTextAlign="Left" vTextAlign="Middle">
 			<paragraph lineSpacingSize="1.0"/>
 			<text><![CDATA[Propietario:]]></text>
 		</element>
-		<element kind="staticText" uuid="e8745fd1-05bd-4b54-b839-d7fa434f64a9" x="260" y="210" width="110" height="30" markup="none" fontName="Tahoma" fontSize="12.0" bold="false" hTextAlign="Left" vTextAlign="Middle">
+		<element kind="staticText" uuid="e8745fd1-05bd-4b54-b839-d7fa434f64a9" x="260" y="210" width="110" height="30" markup="none" fontName="Arial" fontSize="12.0" bold="false" hTextAlign="Left" vTextAlign="Middle">
 			<paragraph lineSpacingSize="1.0"/>
 			<text><![CDATA[Clinica Veterinaria:]]></text>
 		</element>
-		<element kind="staticText" uuid="566e4224-a03b-4c4a-8f96-09d64f194c60" x="38" y="170" width="42" height="30" markup="none" fontName="Tahoma" fontSize="12.0" bold="false" hTextAlign="Left" vTextAlign="Middle">
+		<element kind="staticText" uuid="566e4224-a03b-4c4a-8f96-09d64f194c60" x="38" y="170" width="42" height="30" markup="none" fontName="Arial" fontSize="12.0" bold="false" hTextAlign="Left" vTextAlign="Middle">
 			<paragraph lineSpacingSize="1.0"/>
 			<text><![CDATA[Sexo:]]></text>
 		</element>
-		<element kind="textField" uuid="1fcf61fb-f735-4bbc-9c53-1b0cc1cdcd47" x="98" y="90" width="100" height="30" markup="none" fontName="Tahoma" fontSize="14.0" vTextAlign="Middle">
+		<element kind="textField" uuid="1fcf61fb-f735-4bbc-9c53-1b0cc1cdcd47" x="98" y="90" width="100" height="30" markup="none" fontName="Arial" fontSize="14.0" vTextAlign="Middle">
 			<expression><![CDATA[$F{especie}]]></expression>
 		</element>
-		<element kind="textField" uuid="c23100aa-15ba-44db-8d7f-81d53b0132db" x="98" y="50" width="100" height="30" markup="none" fontName="Tahoma" fontSize="14.0" vTextAlign="Middle">
+		<element kind="textField" uuid="c23100aa-15ba-44db-8d7f-81d53b0132db" x="98" y="50" width="100" height="30" markup="none" fontName="Arial" fontSize="14.0" vTextAlign="Middle">
 			<expression><![CDATA[$F{mascota}]]></expression>
 		</element>
-		<element kind="staticText" uuid="2b27da3e-e8aa-4cd3-8ed9-84996783a686" x="38" y="210" width="42" height="30" markup="none" fontName="Tahoma" fontSize="12.0" bold="false" hTextAlign="Left" vTextAlign="Middle">
+		<element kind="staticText" uuid="2b27da3e-e8aa-4cd3-8ed9-84996783a686" x="38" y="210" width="42" height="30" markup="none" fontName="Arial" fontSize="12.0" bold="false" hTextAlign="Left" vTextAlign="Middle">
 			<paragraph lineSpacingSize="1.0"/>
 			<text><![CDATA[Edad:]]></text>
 		</element>
-		<element kind="textField" uuid="64397350-849b-463b-ba51-2876a3be53f0" x="89" y="130" width="100" height="30" markup="none" fontName="Tahoma&#xd;&#xa;" fontSize="14.0" hTextAlign="Left" vTextAlign="Middle">
+		<element kind="textField" uuid="64397350-849b-463b-ba51-2876a3be53f0" x="89" y="130" width="100" height="30" markup="none" fontName="Arial" fontSize="14.0" hTextAlign="Left" vTextAlign="Middle">
 			<expression><![CDATA[$F{raza}]]></expression>
 		</element>
-		<element kind="textField" uuid="cd637f57-1f30-439a-bbad-191b442a316e" x="89" y="170" width="100" height="30" markup="none" fontName="Tahoma&#xd;&#xa;" fontSize="12.0" vTextAlign="Middle">
+		<element kind="textField" uuid="cd637f57-1f30-439a-bbad-191b442a316e" x="89" y="170" width="100" height="30" markup="none" fontName="Arial" fontSize="12.0" vTextAlign="Middle">
 			<expression><![CDATA[$F{sexo}]]></expression>
 		</element>
-		<element kind="textField" uuid="5bc93ac3-77d6-4f30-8f6e-006a838108be" x="89" y="210" width="100" height="30" markup="none" fontName="Tahoma&#xd;&#xa;Tahoma" fontSize="12.0" vTextAlign="Middle">
+		<element kind="textField" uuid="5bc93ac3-77d6-4f30-8f6e-006a838108be" x="89" y="210" width="100" height="30" markup="none" fontName="Arial" fontSize="12.0" vTextAlign="Middle">
 			<expression><![CDATA[$F{edad}]]></expression>
 		</element>
-		<element kind="staticText" uuid="f8e15c9a-6bfb-4109-95bc-3dc720609e67" x="260" y="170" width="110" height="30" markup="none" fontName="Tahoma" fontSize="12.0" bold="false" hTextAlign="Left" vTextAlign="Middle">
+		<element kind="staticText" uuid="f8e15c9a-6bfb-4109-95bc-3dc720609e67" x="260" y="170" width="110" height="30" markup="none" fontName="Arial" fontSize="12.0" bold="false" hTextAlign="Left" vTextAlign="Middle">
 			<paragraph lineSpacingSize="1.0"/>
 			<text><![CDATA[Medico Veterinario:]]></text>
 		</element>
-		<element kind="textField" uuid="134ee777-f9b4-495e-bde7-26992e3ce2ef" x="340" y="90" width="180" height="30" markup="none" fontName="Tahoma" fontSize="12.0" vTextAlign="Middle">
+		<element kind="textField" uuid="134ee777-f9b4-495e-bde7-26992e3ce2ef" x="340" y="90" width="180" height="30" markup="none" fontName="Arial" fontSize="12.0" vTextAlign="Middle">
 			<expression><![CDATA[$F{propietario}]]></expression>
 		</element>
-		<element kind="textField" uuid="d36f18d5-aa88-41fb-a445-8226495714b7" x="380" y="210" width="186" height="30" markup="none" fontName="Tahoma" fontSize="12.0" vTextAlign="Middle">
+		<element kind="textField" uuid="d36f18d5-aa88-41fb-a445-8226495714b7" x="380" y="210" width="186" height="30" markup="none" fontName="Arial" fontSize="12.0" vTextAlign="Middle">
 			<expression><![CDATA[$F{clinica}]]></expression>
 		</element>
-		<element kind="textField" uuid="f9093568-1f5a-44c1-b8c7-1b04f798b5a5" x="380" y="170" width="186" height="30" markup="none" fontName="Tahoma&#xd;&#xa;" fontSize="12.0" vTextAlign="Middle">
+		<element kind="textField" uuid="f9093568-1f5a-44c1-b8c7-1b04f798b5a5" x="380" y="170" width="186" height="30" markup="none" fontName="Arial" fontSize="12.0" vTextAlign="Middle">
 			<expression><![CDATA[$F{veterinario}]]></expression>
 		</element>
 		<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -246,23 +246,23 @@ Email: vetsoft@gmail.com]]></text>
 		<element kind="rectangle" uuid="e88f1216-e8c1-47a2-b3ae-edb5ec86a0e7" x="119" y="10" width="109" height="48"/>
 		<element kind="rectangle" uuid="98ee1a4e-8fd3-4ca0-8e1c-e88a02185f1b" x="337" y="10" width="109" height="48"/>
 		<element kind="rectangle" uuid="575d1d72-3c8a-4434-a3cf-058ec4dd5ff2" x="446" y="10" width="109" height="48"/>
-		<element kind="staticText" uuid="8e33363a-0794-4707-97f3-ae611f6975c0" x="10" y="11" width="108" height="47" markup="none" fontName="Tahoma" fontSize="15.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+		<element kind="staticText" uuid="8e33363a-0794-4707-97f3-ae611f6975c0" x="10" y="11" width="108" height="47" markup="none" fontName="Arial" fontSize="15.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
 			<paragraph lineSpacingSize="1.0"/>
 			<text><![CDATA[Examen]]></text>
 		</element>
-		<element kind="staticText" uuid="9e771dc6-ef36-47ce-aefe-ed29a20ae292" x="119" y="11" width="108" height="47" markup="none" fontName="Tahoma" fontSize="15.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+		<element kind="staticText" uuid="9e771dc6-ef36-47ce-aefe-ed29a20ae292" x="119" y="11" width="108" height="47" markup="none" fontName="Arial" fontSize="15.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
 			<paragraph lineSpacingSize="1.0"/>
 			<text><![CDATA[Cantidad]]></text>
 		</element>
-		<element kind="staticText" uuid="b4afd5fe-7e58-4284-aad5-3a102aa3190a" x="228" y="11" width="108" height="47" markup="none" fontName="Tahoma" fontSize="15.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+		<element kind="staticText" uuid="b4afd5fe-7e58-4284-aad5-3a102aa3190a" x="228" y="11" width="108" height="47" markup="none" fontName="Arial" fontSize="15.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
 			<paragraph lineSpacingSize="1.0"/>
 			<text><![CDATA[Valor]]></text>
 		</element>
-		<element kind="staticText" uuid="cbcc7481-e093-4801-a5a3-13d5e5f55594" x="337" y="11" width="108" height="47" markup="none" fontName="Tahoma" fontSize="15.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+		<element kind="staticText" uuid="cbcc7481-e093-4801-a5a3-13d5e5f55594" x="337" y="11" width="108" height="47" markup="none" fontName="Arial" fontSize="15.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
 			<paragraph lineSpacingSize="1.0"/>
 			<text><![CDATA[Subtotal]]></text>
 		</element>
-		<element kind="staticText" uuid="37a08dca-3170-48c2-aab4-735d4f378213" x="446" y="11" width="108" height="47" markup="none" fontName="Tahoma" fontSize="13.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+		<element kind="staticText" uuid="37a08dca-3170-48c2-aab4-735d4f378213" x="446" y="11" width="108" height="47" markup="none" fontName="Arial" fontSize="13.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
 			<paragraph lineSpacingSize="1.0"/>
 			<text><![CDATA[Observaciones]]></text>
 		</element>
@@ -271,51 +271,51 @@ Email: vetsoft@gmail.com]]></text>
 	<detail>
 		<band height="59" splitType="Stretch">
 			<element kind="rectangle" uuid="851ed988-340d-428e-a1b1-ce1f97f8ae7d" x="11" y="0" width="543" height="48"/>
-			<element kind="textField" uuid="95182ae1-8796-4316-8c58-9e8858f47b32" x="11" y="0" width="107" height="47" markup="none" fontName="Tahoma" fontSize="12.0" hTextAlign="Center" vTextAlign="Middle">
+			<element kind="textField" uuid="95182ae1-8796-4316-8c58-9e8858f47b32" x="11" y="0" width="107" height="47" markup="none" fontName="Arial" fontSize="12.0" hTextAlign="Center" vTextAlign="Middle">
 				<expression><![CDATA[$F{examen}]]></expression>
 				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="edf6add8-38a0-410f-b47c-e0ca019d75cc"/>
 			</element>
-			<element kind="textField" uuid="b4907d93-ffac-4acd-97b0-ca1d2c66a8a9" x="118" y="0" width="108" height="47" markup="none" fontName="Tahoma" fontSize="12.0" pattern="$ #,##0" linkTarget="Self" hTextAlign="Center" vTextAlign="Middle">
+			<element kind="textField" uuid="b4907d93-ffac-4acd-97b0-ca1d2c66a8a9" x="118" y="0" width="108" height="47" markup="none" fontName="Arial" fontSize="12.0" pattern="$ #,##0" linkTarget="Self" hTextAlign="Center" vTextAlign="Middle">
 				<expression><![CDATA[$F{cantidad}]]></expression>
 				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="58ed4fb8-8bd6-4f71-9d44-c550431f4d1f"/>
 			</element>
-			<element kind="textField" uuid="27aab1da-09b3-47d4-964c-927e5a8aed79" x="226" y="0" width="111" height="47" markup="none" fontName="Tahoma" fontSize="12.0" pattern="$ #,##0" hTextAlign="Center" vTextAlign="Middle">
+			<element kind="textField" uuid="27aab1da-09b3-47d4-964c-927e5a8aed79" x="226" y="0" width="111" height="47" markup="none" fontName="Arial" fontSize="12.0" pattern="$ #,##0" hTextAlign="Center" vTextAlign="Middle">
 				<expression><![CDATA[$F{valor}]]></expression>
 				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="cc4c1ed0-8d4e-41fe-bd33-01764a41dfb7"/>
 			</element>
-			<element kind="textField" uuid="dcfe101c-d6d8-4885-9ba2-3a6b2d24838e" x="445" y="0" width="110" height="47" markup="none" fontName="Tahoma" fontSize="12.0" hTextAlign="Center" vTextAlign="Middle">
+			<element kind="textField" uuid="dcfe101c-d6d8-4885-9ba2-3a6b2d24838e" x="445" y="0" width="110" height="47" markup="none" fontName="Arial" fontSize="12.0" hTextAlign="Center" vTextAlign="Middle">
 				<expression><![CDATA[$F{observaciones}]]></expression>
 				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b4b2a110-acf1-4161-84fe-0972eef3749d"/>
 			</element>
-			<element kind="textField" uuid="3d0205ea-288a-44f9-8a8e-57469e04863e" x="338" y="-1" width="107" height="48" markup="none" fontName="Tahoma" fontSize="12.0" pattern="$ #,##0" underline="false" hTextAlign="Center" vTextAlign="Middle">
+			<element kind="textField" uuid="3d0205ea-288a-44f9-8a8e-57469e04863e" x="338" y="-1" width="107" height="48" markup="none" fontName="Arial" fontSize="12.0" pattern="$ #,##0" underline="false" hTextAlign="Center" vTextAlign="Middle">
 				<expression><![CDATA[$F{valor}.doubleValue() * Double.valueOf($F{cantidad})]]></expression>
 			</element>
 		</band>
 	</detail>
 	<summary height="111" splitType="Stretch">
 		<element kind="rectangle" uuid="211b8ac8-0373-4c21-aad3-3c357b391cc2" x="229" y="9" width="109" height="48"/>
-		<element kind="staticText" uuid="de74c555-d30d-4080-a6fb-a681df4f0500" x="229" y="10" width="108" height="47" markup="none" fontName="Tahoma" fontSize="15.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+		<element kind="staticText" uuid="de74c555-d30d-4080-a6fb-a681df4f0500" x="229" y="10" width="108" height="47" markup="none" fontName="Arial" fontSize="15.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
 			<paragraph lineSpacingSize="1.0"/>
 			<text><![CDATA[Total]]></text>
 		</element>
 		<element kind="rectangle" uuid="6734f0c5-29bb-470e-bff1-9e8d8659f1af" x="337" y="9" width="109" height="48"/>
-		<element kind="staticText" uuid="3c9df247-984c-4c85-b243-89023da3f6f5" x="337" y="10" width="108" height="47" markup="none" fontName="Tahoma" fontSize="15.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+		<element kind="staticText" uuid="3c9df247-984c-4c85-b243-89023da3f6f5" x="337" y="10" width="108" height="47" markup="none" fontName="Arial" fontSize="15.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
 			<paragraph lineSpacingSize="1.0"/>
 			<text><![CDATA[Abono]]></text>
 		</element>
 		<element kind="rectangle" uuid="97e81637-2538-49f8-81dc-be6abcd63841" x="444" y="9" width="109" height="48"/>
-		<element kind="staticText" uuid="714d45df-171c-461f-984d-a89915acc1b6" x="444" y="10" width="108" height="47" markup="none" fontName="Tahoma" fontSize="15.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+		<element kind="staticText" uuid="714d45df-171c-461f-984d-a89915acc1b6" x="444" y="10" width="108" height="47" markup="none" fontName="Arial" fontSize="15.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
 			<paragraph lineSpacingSize="1.0"/>
 			<text><![CDATA[Saldo]]></text>
 		</element>
 		<element kind="rectangle" uuid="d6c100af-ef52-4b98-883a-97e4e6095ea3" x="229" y="57" width="323" height="48"/>
-		<element kind="textField" uuid="081fcb0d-7049-46e6-8863-0c715d45beab" x="228" y="57" width="108" height="47" markup="none" fontName="Tahoma" fontSize="12.0" pattern="$ #,##0" hTextAlign="Center" vTextAlign="Middle">
+		<element kind="textField" uuid="081fcb0d-7049-46e6-8863-0c715d45beab" x="228" y="57" width="108" height="47" markup="none" fontName="Arial" fontSize="12.0" pattern="$ #,##0" hTextAlign="Center" vTextAlign="Middle">
 			<expression><![CDATA[$F{os_valor_total}]]></expression>
 		</element>
-		<element kind="textField" uuid="34f3e839-3a99-49ef-aacf-8ee39a136653" x="337" y="57" width="107" height="47" markup="none" fontName="Tahoma&#xd;&#xa;" fontSize="12.0" pattern="$ #,##0" hTextAlign="Center" vTextAlign="Middle">
+		<element kind="textField" uuid="34f3e839-3a99-49ef-aacf-8ee39a136653" x="337" y="57" width="107" height="47" markup="none" fontName="Arial" fontSize="12.0" pattern="$ #,##0" hTextAlign="Center" vTextAlign="Middle">
 			<expression><![CDATA[$F{os_abono}]]></expression>
 		</element>
-		<element kind="textField" uuid="b6726150-3568-4ed2-822b-442462acea6c" x="444" y="57" width="108" height="47" markup="none" fontName="Tahoma&#xd;&#xa;" fontSize="12.0" pattern="$ #,##0" hTextAlign="Center" vTextAlign="Middle">
+		<element kind="textField" uuid="b6726150-3568-4ed2-822b-442462acea6c" x="444" y="57" width="108" height="47" markup="none" fontName="Arial" fontSize="12.0" pattern="$ #,##0" hTextAlign="Center" vTextAlign="Middle">
 			<expression><![CDATA[$F{os_saldo}]]></expression>
 		</element>
 		<property name="com.jaspersoft.studio.unit.height" value="px"/>

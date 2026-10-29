@@ -35,6 +35,9 @@ public class OrdenServicio {
     private String nombreVeterinaria;
     private String nombreMascota;
 
+    private int idExamenFiltro;
+    private String nombreExamen;
+
     // Lista de detalles asociados a la orden
     private List<OrdenServicioDetalle> detalles;
 
@@ -205,5 +208,21 @@ public class OrdenServicio {
 
     public void setNombreMascota(String nombreMascota) {
         this.nombreMascota = nombreMascota;
+    }
+
+    public int getIdExamenFiltro() {
+        return idExamenFiltro;
+    }
+
+    public void setIdExamenFiltro(int idExamenFiltro) {
+        this.idExamenFiltro = idExamenFiltro;
+    }
+
+    public String getNombreExamen() {
+        return nombreExamen;
+    }
+
+    public void setNombreExamen(String nombreExamen) {
+        this.nombreExamen = nombreExamen;
     }
 }

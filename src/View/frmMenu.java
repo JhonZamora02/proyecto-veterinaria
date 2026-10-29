@@ -52,7 +52,6 @@ public class frmMenu extends javax.swing.JFrame {
         jmiParametroExamen = new javax.swing.JMenuItem();
         jmiFormaPago = new javax.swing.JMenuItem();
         jmiConcepto = new javax.swing.JMenuItem();
-        jmiTercero = new javax.swing.JMenuItem();
         jmDocumento = new javax.swing.JMenu();
         jmiOrdenServicio = new javax.swing.JMenuItem();
         jmiComprobanteEgreso = new javax.swing.JMenuItem();
@@ -153,9 +152,6 @@ public class frmMenu extends javax.swing.JFrame {
         jmiConcepto.setText("Concepto");
         jmArchivo.add(jmiConcepto);
 
-        jmiTercero.setText("Tercero");
-        jmArchivo.add(jmiTercero);
-
         jmbMenu.add(jmArchivo);
 
         jmDocumento.setText("Documento");
@@ -246,7 +242,6 @@ public class frmMenu extends javax.swing.JFrame {
     public javax.swing.JMenuItem jmiParametroExamen;
     public javax.swing.JMenuItem jmiPerfil;
     public javax.swing.JMenuItem jmiRaza;
-    public javax.swing.JMenuItem jmiTercero;
     public javax.swing.JMenuItem jmiUsuario;
     public javax.swing.JMenuItem jmiVeterinario;
     private javax.swing.JLabel lbTitulo;

@@ -38,7 +38,7 @@ public class CtrlRaza implements ActionListener {
         this.vistaRaza.btnAgregarRaza.addActionListener(this);
         this.vistaRaza.btnActualizarRaza.addActionListener(this);
         this.vistaRaza.btnEstadoRaza.addActionListener(this);
-        this.vistaRaza.btnEliminarRaza.addActionListener(this); // 👈 nuevo
+        this.vistaRaza.btnEliminarRaza.addActionListener(this);
         this.vistaRaza.btnLimpiarRaza.addActionListener(this);
         this.vistaRaza.btnRegresa.addActionListener(this);
 
@@ -234,7 +234,7 @@ public class CtrlRaza implements ActionListener {
     private void inicializarConsecutivoId() {
         int siguienteId = dao.obtenerSiguienteId();
         vistaRaza.txtIdRaza.setText(String.valueOf(siguienteId));
-        vistaRaza.txtIdRaza.setEnabled(false); // Recomendado para evitar que el usuario lo modifique
+        vistaRaza.txtIdRaza.setEnabled(false);
     }
 
     private void limpiar() {

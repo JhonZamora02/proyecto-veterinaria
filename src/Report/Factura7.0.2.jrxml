@@ -122,8 +122,8 @@ ORDER BY osd.dos_id]]></query>
 		<element kind="textField" uuid="10d89d6c-74b0-4a66-80bf-eaf0bd61144e" x="120" y="73" width="100" height="20">
 			<expression><![CDATA[$F{os_id}]]></expression>
 		</element>
-		<element kind="image" uuid="2ce60636-dd8a-422d-b5a0-e192febeae67" x="20" y="13" width="45" height="27">
-			<expression><![CDATA["C:/Users/JHON/Documents/NetBeansProjects/Proyecto_Veterinario/src/Imagenes/logoPequeno.jpg"]]></expression>
+		<element kind="image" uuid="2ce60636-dd8a-422d-b5a0-e192febeae67" x="20" y="10" width="85" height="59">
+			<expression><![CDATA["src/Imagenes/logoPequeno.jpg"]]></expression>
 		</element>
 		<property name="com.jaspersoft.studio.unit.height" value="px"/>
 	</title>

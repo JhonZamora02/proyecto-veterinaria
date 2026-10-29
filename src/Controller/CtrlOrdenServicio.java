@@ -11,11 +11,21 @@ import View.*;
 import java.awt.event.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
+
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.view.JasperViewer;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
 
 public class CtrlOrdenServicio implements ActionListener {
 
@@ -47,43 +57,41 @@ public class CtrlOrdenServicio implements ActionListener {
         vista.setLocationRelativeTo(null);
         vista.setResizable(false);
         vista.setTitle("Orden de Servicio - VetSoft v1.0");
-        
 
-        // ====== Num. de orden autogenerado ======
+        // El botón Exportar SIEMPRE debe estar oculto al crear una orden nueva
+        vista.btnExportar.setVisible(false);
+
         int siguienteId = daoOrden.obtenerSiguienteId();
         vista.txtNumero.setText(String.valueOf(siguienteId));
         vista.txtNumero.setEditable(false);
 
-        // ====== Fecha actual ======
         establecerFechaActual();
         vista.txtFechaToma.setEditable(true);
 
-        // ====== Campos bloqueados ======
         vista.txtValor.setEditable(false);
         vista.txtTotal.setEditable(false);
         vista.txtSaldo.setEditable(false);
 
-        // ====== Asignar eventos ======
-        this.vista.btnGuardar.addActionListener(this);
-        this.vista.btnCancelar.addActionListener(this);
-        this.vista.btnRegresa.addActionListener(this);
-        this.vista.btnAgregarExamen.addActionListener(this);
-        this.vista.btnEliminarExamen.addActionListener(this);
-        this.vista.btnListar.addActionListener(this);
+        vista.btnGuardar.addActionListener(this);
+        vista.btnCancelar.addActionListener(this);
+        vista.btnRegresa.addActionListener(this);
+        vista.btnAgregarExamen.addActionListener(this);
+        vista.btnEliminarExamen.addActionListener(this);
+        vista.btnListar.addActionListener(this);
+        vista.btnExportar.addActionListener(this);
 
-        // ====== Inicializar combos y tabla ======
         cargarComboMascota();
         cargarComboVeterinario();
         cargarComboExamen();
         inicializarTabla();
 
-        // ====== Eventos automáticos ======
         inicializarEventoValorExamen();
         inicializarEventoAbono();
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+
         if (e.getSource() == vista.btnGuardar) {
             guardarOrdenServicio();
         }
@@ -102,14 +110,51 @@ public class CtrlOrdenServicio implements ActionListener {
         if (e.getSource() == vista.btnListar) {
             abrirListadoOrdenes();
         }
+        if (e.getSource() == vista.btnExportar) {
+            exportarFacturaActual();
+        }
+    }
+
+    // ======================================================
+    // EXPORTAR FACTURA DE LA ORDEN ACTUAL
+    // ======================================================
+    private void exportarFacturaActual() {
+        try {
+
+            int osId = Integer.parseInt(vista.txtNumero.getText());
+
+            String ruta = System.getProperty("user.dir") + "/src/Report/Factura_OrdenServicio.jasper";
+
+            java.io.File f = new java.io.File(ruta);
+            if (!f.exists()) {
+                JOptionPane.showMessageDialog(vista, "No se encontró el archivo del reporte Jasper:\n" + ruta);
+                return;
+            }
+
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3306/labpets", "root", ""
+            );
+
+            java.util.Map<String, Object> params = new java.util.HashMap<>();
+            params.put("idOrden", osId);
+
+            JasperPrint print = JasperFillManager.fillReport(ruta, params, conn);
+            JasperViewer viewer = new JasperViewer(print, false);
+            viewer.setVisible(true);
+
+            conn.close();
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(vista, "Error generando factura Jasper:\n" + ex.getMessage());
+        }
     }
 
     // ======================================================
     // FECHA ACTUAL
     // ======================================================
     private void establecerFechaActual() {
-        Date hoy = new Date();
-        vista.txtFechaToma.setText(sdf.format(hoy));
+        vista.txtFechaToma.setText(sdf.format(new Date()));
     }
 
     // ======================================================
@@ -150,17 +195,19 @@ public class CtrlOrdenServicio implements ActionListener {
     // ======================================================
     private void inicializarTabla() {
         String[] columnas = {"Examen", "Valor", "Cantidad", "Observaciones", "Subtotal"};
+
         DefaultTableModel modelo = new DefaultTableModel(null, columnas) {
             @Override
             public boolean isCellEditable(int r, int c) {
                 return false;
             }
         };
+
         vista.tblDetalleServicio.setModel(modelo);
     }
 
     // ======================================================
-    // EVENTOS
+    // EVENTOS AUTOMÁTICOS
     // ======================================================
     private void inicializarEventoValorExamen() {
         vista.cmbExamen.addActionListener(e -> mostrarValorExamenSeleccionado());
@@ -172,9 +219,12 @@ public class CtrlOrdenServicio implements ActionListener {
                 vista.txtValor.setText("");
                 return;
             }
+
             String nombreExamen = vista.cmbExamen.getSelectedItem().toString();
             Examen ex = buscarExamenPorDescripcion(nombreExamen);
+
             vista.txtValor.setText(ex != null ? String.valueOf(ex.getValor()) : "");
+
         } catch (Exception e) {
             vista.txtValor.setText("");
         }
@@ -200,17 +250,19 @@ public class CtrlOrdenServicio implements ActionListener {
         try {
             double total = vista.txtTotal.getText().isEmpty() ? 0.0 : Double.parseDouble(vista.txtTotal.getText());
             double abono = vista.txtAbono.getText().isEmpty() ? 0.0 : Double.parseDouble(vista.txtAbono.getText());
+
             if (abono < 0) {
                 abono = 0;
             }
             if (abono > total) {
                 JOptionPane.showMessageDialog(vista, "El abono no puede ser mayor que el total.");
-                abono = total;
                 vista.txtAbono.setText(String.valueOf(total));
+                abono = total;
             }
-            vista.txtSaldo.setText(String.valueOf(total - abono));
-        } catch (NumberFormatException ex) {
 
+            vista.txtSaldo.setText(String.valueOf(total - abono));
+
+        } catch (Exception e) {
         }
     }
 
@@ -226,13 +278,9 @@ public class CtrlOrdenServicio implements ActionListener {
 
             String nombreExamen = vista.cmbExamen.getSelectedItem().toString();
             Examen ex = buscarExamenPorDescripcion(nombreExamen);
-            if (ex == null) {
-                JOptionPane.showMessageDialog(vista, "Examen no encontrado.");
-                return;
-            }
 
             if (vista.txtCantidad.getText().trim().isEmpty()) {
-                JOptionPane.showMessageDialog(vista, "Ingrese la cantidad del examen.");
+                JOptionPane.showMessageDialog(vista, "Ingrese la cantidad.");
                 return;
             }
 
@@ -251,17 +299,18 @@ public class CtrlOrdenServicio implements ActionListener {
             actualizarTotales();
             limpiarCamposDetalle();
 
-        } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(vista, "La cantidad debe ser un numero válido.");
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(vista, "Cantidad invalida.");
         }
     }
 
     private void eliminarDetalle() {
         int fila = vista.tblDetalleServicio.getSelectedRow();
         if (fila == -1) {
-            JOptionPane.showMessageDialog(vista, "Seleccione un registro a eliminar.");
+            JOptionPane.showMessageDialog(vista, "Seleccione un examen.");
             return;
         }
+
         ((DefaultTableModel) vista.tblDetalleServicio.getModel()).removeRow(fila);
         actualizarTotales();
     }
@@ -269,9 +318,11 @@ public class CtrlOrdenServicio implements ActionListener {
     private void actualizarTotales() {
         double total = 0;
         DefaultTableModel modelo = (DefaultTableModel) vista.tblDetalleServicio.getModel();
+
         for (int i = 0; i < modelo.getRowCount(); i++) {
             total += Double.parseDouble(modelo.getValueAt(i, 4).toString());
         }
+
         vista.txtTotal.setText(String.valueOf(total));
         recalcularSaldo();
     }
@@ -281,6 +332,7 @@ public class CtrlOrdenServicio implements ActionListener {
     // ======================================================
     private void guardarOrdenServicio() {
         try {
+
             if (vista.cmbMascota.getSelectedItem() == null) {
                 JOptionPane.showMessageDialog(vista, "Seleccione una mascota.");
                 return;
@@ -289,9 +341,8 @@ public class CtrlOrdenServicio implements ActionListener {
                 JOptionPane.showMessageDialog(vista, "Seleccione un veterinario.");
                 return;
             }
-
-            if (((DefaultTableModel) vista.tblDetalleServicio.getModel()).getRowCount() == 0) {
-                JOptionPane.showMessageDialog(vista, "Agregue al menos un examen al detalle.");
+            if (vista.tblDetalleServicio.getRowCount() == 0) {
+                JOptionPane.showMessageDialog(vista, "Agregue al menos un examen.");
                 return;
             }
 
@@ -305,26 +356,14 @@ public class CtrlOrdenServicio implements ActionListener {
             int idMascota = obtenerIdMascotaPorNombre(nombreMascota);
             int idVeterinario = obtenerIdVeterinarioPorNombre(nombreVeterinario);
 
-            if (idMascota == 0) {
-                JOptionPane.showMessageDialog(vista, "No se pudo resolver el ID de la mascota seleccionada.");
-                return;
-            }
-            if (idVeterinario == 0) {
-                JOptionPane.showMessageDialog(vista, "No se pudo resolver el ID del veterinario seleccionado.");
-                return;
-            }
+            Date fecha = new Date();
 
-            Date fecha;
-            try {
-                sdf.setLenient(false);
-                fecha = sdf.parse(vista.txtFechaToma.getText().trim());
-            } catch (ParseException pe) {
-                JOptionPane.showMessageDialog(vista, "La fecha debe tener formato yyyy-MM-dd.");
-                return;
-            }
+            double total = vista.txtTotal.getText().isEmpty() ? 0.0
+                    : Double.parseDouble(vista.txtTotal.getText());
 
-            double total = vista.txtTotal.getText().isEmpty() ? 0.0 : Double.parseDouble(vista.txtTotal.getText());
-            double abono = vista.txtAbono.getText().isEmpty() ? 0.0 : Double.parseDouble(vista.txtAbono.getText());
+            double abono = vista.txtAbono.getText().isEmpty() ? 0.0
+                    : Double.parseDouble(vista.txtAbono.getText());
+
             double saldo = total - abono;
 
             OrdenServicio orden = new OrdenServicio();
@@ -341,41 +380,43 @@ public class CtrlOrdenServicio implements ActionListener {
             orden.setUsuarioCreador(usuarioLogueado);
 
             int idGenerado = daoOrden.guardarOrden(orden);
+
             if (idGenerado > 0) {
                 guardarDetallesOrden(idGenerado);
-                JOptionPane.showMessageDialog(vista, "Orden registrada correctamente (ID: " + idGenerado + ")");
+                JOptionPane.showMessageDialog(vista, "Orden registrada correctamente");
                 limpiarCampos();
-            } else {
-                JOptionPane.showMessageDialog(vista, "No se pudo registrar la orden.");
             }
 
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(vista, "Error al guardar orden: " + ex.getMessage());
+            JOptionPane.showMessageDialog(vista, "Error al guardar: " + ex.getMessage());
         }
     }
 
     private void guardarDetallesOrden(int idOrden) {
         DefaultTableModel modelo = (DefaultTableModel) vista.tblDetalleServicio.getModel();
         List<OrdenServicioDetalle> lista = new ArrayList<>();
+
         for (int i = 0; i < modelo.getRowCount(); i++) {
+
             OrdenServicioDetalle det = new OrdenServicioDetalle();
+
             String nombreExamen = modelo.getValueAt(i, 0).toString();
             Examen ex = buscarExamenPorDescripcion(nombreExamen);
-            if (ex == null) {
-                continue;
-            }
+
             det.setIdExamen(ex.getId());
             det.setValor(Double.parseDouble(modelo.getValueAt(i, 1).toString()));
             det.setCantidad(modelo.getValueAt(i, 2).toString());
             det.setObservaciones(modelo.getValueAt(i, 3).toString());
             det.setSubtotal(Double.parseDouble(modelo.getValueAt(i, 4).toString()));
+
             lista.add(det);
         }
+
         daoDetalle.guardarDetalles(lista, idOrden);
     }
 
     // ======================================================
-    // UTILIDADES
+    // LIMPIEZA Y NAVEGACIÓN
     // ======================================================
     private void limpiarCamposDetalle() {
         vista.txtCantidad.setText("");
@@ -394,15 +435,16 @@ public class CtrlOrdenServicio implements ActionListener {
         vista.cmbExamen.setSelectedIndex(-1);
         vista.cmbMascota.setSelectedIndex(-1);
         vista.cmbVeterinario.setSelectedIndex(-1);
+
         vista.txtNumero.setText(String.valueOf(daoOrden.obtenerSiguienteId()));
         establecerFechaActual();
+
+        // Siempre ocultar cuando es modo creación
+        vista.btnExportar.setVisible(false);
     }
 
     private void regresarAlMenu() {
         vista.dispose();
-        if (menuAnterior.lblNombreUsuario != null) {
-            menuAnterior.lblNombreUsuario.setText("Bienvenid@, " + usuarioLogueado);
-        }
         menuAnterior.setVisible(true);
     }
 
@@ -426,17 +468,15 @@ public class CtrlOrdenServicio implements ActionListener {
     }
 
     private int obtenerIdVeterinarioPorNombre(String nombreBuscado) {
-        int id = 0;
         for (Object[] v : daoVeterinario.listarTodos()) {
             String nombreVet = v[1].toString().trim().toLowerCase();
             if (nombreBuscado.toLowerCase().startsWith(nombreVet)
                     || nombreVet.startsWith(nombreBuscado.toLowerCase())
                     || nombreVet.contains(nombreBuscado.toLowerCase())) {
-                id = Integer.parseInt(v[0].toString());
-                break;
+                return Integer.parseInt(v[0].toString());
             }
         }
-        return id;
+        return 0;
     }
 
     private String extraerPropietarioDeComboMascota(String textoCombo) {
@@ -456,9 +496,9 @@ public class CtrlOrdenServicio implements ActionListener {
         return null;
     }
 
-// ======================================================
-// MÉTODO PARA MOSTRAR DETALLE DESDE EL LISTADO
-// ======================================================
+    // ======================================================
+    // MODO CONSULTA DESDE EL LISTADO (MUESTRA DETALLE)
+    // ======================================================
     public void mostrarOrdenEnVistaDesdeListado(
             int osId,
             String fechaYYYYMMDD,
@@ -471,14 +511,16 @@ public class CtrlOrdenServicio implements ActionListener {
             String estado
     ) {
         try {
-            // Bloquear botones que no se deben usar en modo consulta
+
             vista.btnGuardar.setEnabled(false);
             vista.btnAgregarExamen.setEnabled(false);
             vista.btnEliminarExamen.setEnabled(false);
             vista.btnCancelar.setEnabled(false);
-            vista.btnListar.setVisible(false); // Oculta el botón Listar
+            vista.btnListar.setVisible(false);
 
-            // Llenar los campos principales
+            // AHORA SI SE DEBE MOSTRAR EL BOTÓN EXPORTAR
+            vista.btnExportar.setVisible(true);
+
             vista.txtNumero.setText(String.valueOf(osId));
             vista.txtFechaToma.setText(fechaYYYYMMDD);
             vista.txtTotal.setText(String.valueOf(total));
@@ -486,7 +528,6 @@ public class CtrlOrdenServicio implements ActionListener {
             vista.txtSaldo.setText(String.valueOf(saldo));
             vista.txtObservaciones.setText("");
 
-            // Bloquear campos de edición
             vista.txtNumero.setEditable(false);
             vista.txtFechaToma.setEditable(false);
             vista.txtAbono.setEditable(false);
@@ -498,47 +539,39 @@ public class CtrlOrdenServicio implements ActionListener {
             vista.cmbVeterinario.setEnabled(false);
             vista.cmbExamen.setEnabled(false);
 
-            // Cargar información del veterinario y la mascota
             vista.cmbVeterinario.removeAllItems();
             vista.cmbVeterinario.addItem(nombreVeterinario);
-            vista.cmbVeterinario.setSelectedIndex(0);
 
             vista.cmbMascota.removeAllItems();
             vista.cmbMascota.addItem(nombreMascota + " - Propietario: " + propietario);
-            vista.cmbMascota.setSelectedIndex(0);
 
-            // Cargar detalle de exámenes desde la BD
             DefaultTableModel modelo = (DefaultTableModel) vista.tblDetalleServicio.getModel();
             modelo.setRowCount(0);
 
             List<OrdenServicioDetalle> detalles = daoDetalle.listarPorOrden(osId);
-            if (detalles != null && !detalles.isEmpty()) {
-                for (OrdenServicioDetalle d : detalles) {
-                    modelo.addRow(new Object[]{
-                        d.getDescripcionExamen(),
-                        d.getValor(),
-                        d.getCantidad(),
-                        d.getObservaciones(),
-                        d.getSubtotal()
-                    });
-                }
+            for (OrdenServicioDetalle d : detalles) {
+                modelo.addRow(new Object[]{
+                    d.getDescripcionExamen(),
+                    d.getValor(),
+                    d.getCantidad(),
+                    d.getObservaciones(),
+                    d.getSubtotal()
+                });
             }
 
-            // boton "Regresar" para volver solo al listado
             for (ActionListener al : vista.btnRegresa.getActionListeners()) {
                 vista.btnRegresa.removeActionListener(al);
             }
 
             vista.btnRegresa.addActionListener(ev -> {
                 vista.dispose();
-                frmListarOrdenServicio vistaListar = new frmListarOrdenServicio();
-                CtrlOrdenServicioDetalle ctrlListar = new CtrlOrdenServicioDetalle(vistaListar, menuAnterior, usuarioLogueado);
-                vistaListar.setVisible(true);
+                frmListarOrdenServicio listado = new frmListarOrdenServicio();
+                CtrlOrdenServicioDetalle ctrl = new CtrlOrdenServicioDetalle(listado, menuAnterior, usuarioLogueado);
+                listado.setVisible(true);
             });
 
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(vista, "Error al mostrar la orden: " + ex.getMessage());
+            JOptionPane.showMessageDialog(vista, "Error al mostrar la orden.");
         }
     }
-
 }
