@@ -8,16 +8,16 @@ El sistema cubre el ciclo completo de atención: se registran la mascota y el ve
 
 ## Tabla de contenido
 
-- [Características](#-características)
-- [Flujo principal: Orden de Servicio](#-flujo-principal-orden-de-servicio)
-- [Arquitectura](#-arquitectura)
-- [Tecnologías](#-tecnologías)
-- [Estructura del proyecto](#-estructura-del-proyecto)
-- [Requisitos](#-requisitos)
-- [Instalación y ejecución](#-instalación-y-ejecución)
-- [Base de datos](#-base-de-datos)
-- [Capturas de pantalla](#-capturas-de-pantalla)
-- [Limitaciones conocidas y mejoras sugeridas](#-limitaciones-conocidas-y-mejoras-sugeridas)
+- [Características](#características)
+- [Flujo principal: Orden de Servicio](#flujo-principal-orden-de-servicio)
+- [Arquitectura](#arquitectura)
+- [Tecnologías](#tecnologías)
+- [Estructura del proyecto](#estructura-del-proyecto)
+- [Requisitos](#requisitos)
+- [Instalación y ejecución](#instalación-y-ejecución)
+- [Base de datos](#base-de-datos)
+- [Capturas de pantalla](#capturas-de-pantalla)
+- [Limitaciones conocidas y mejoras sugeridas](#limitaciones-conocidas-y-mejoras-sugeridas)
 
 ---
 
@@ -107,7 +107,7 @@ proyecto-veterinaria/
    git clone https://github.com/JhonZamora02/proyecto-veterinaria.git
    ```
 
-2. **Crear la base de datos** `labpets` en MySQL con las tablas descritas en [Base de datos](#-base-de-datos).
+2. **Crear la base de datos** `labpets` en MySQL con las tablas descritas en [Base de datos](#base-de-datos).
 
 3. **Configurar la conexión** en `src/DAO/MySQLConnection.java`:
    ```java
