@@ -1,0 +1,266 @@
+<!-- Created with Jaspersoft Studio version 7.0.3.final using JasperReports Library version 7.0.3-41034ca841d452f3305ba55b9042260aaa1ab5dd  -->
+<jasperReport name="Factura7.0.2" language="java" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="13ed85fe-bea8-4a83-9e1b-9e81294f9584">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="VetSoft"/>
+	<parameter name="os_id" class="java.lang.Integer"/>
+	<query language="SQL"><![CDATA[SELECT 
+    os.os_id,
+    os.os_fecha,
+    v.vet_nombre AS veterinario,
+    v.vet_veterinaria AS veterinaria,
+    m.mas_nombre AS mascota,
+    m.mas_propietario AS propietario,
+    os.os_valor_total AS total,
+    os.os_abono AS abono,
+    os.os_saldo AS saldo,
+    os.os_observaciones,
+    e.exa_descripcion AS examen,
+    osd.dos_exa_valor AS valor_examen,
+    osd.dos_exa_cantidad AS cantidad,
+    (osd.dos_exa_valor * osd.dos_exa_cantidad) AS subtotal
+FROM orden_servicio os
+INNER JOIN veterinario v ON os.os_vet_id = v.vet_id
+INNER JOIN mascota m ON os.os_mas_id = m.mas_id
+LEFT JOIN orden_servicio_detalle osd ON os.os_id = osd.dos_os_id
+LEFT JOIN examen e ON osd.dos_exa_id = e.exa_id
+WHERE os.os_id = $P{os_id}
+ORDER BY osd.dos_id]]></query>
+	<field name="os_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="os_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="os_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_servicio"/>
+	</field>
+	<field name="os_fecha" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="os_fecha"/>
+		<property name="com.jaspersoft.studio.field.label" value="os_fecha"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_servicio"/>
+	</field>
+	<field name="veterinario" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="vet_nombre"/>
+		<property name="com.jaspersoft.studio.field.label" value="veterinario"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="veterinario"/>
+	</field>
+	<field name="veterinaria" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="vet_veterinaria"/>
+		<property name="com.jaspersoft.studio.field.label" value="veterinaria"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="veterinario"/>
+	</field>
+	<field name="mascota" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="mas_nombre"/>
+		<property name="com.jaspersoft.studio.field.label" value="mascota"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="mascota"/>
+	</field>
+	<field name="propietario" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="mas_propietario"/>
+		<property name="com.jaspersoft.studio.field.label" value="propietario"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="mascota"/>
+	</field>
+	<field name="total" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="os_valor_total"/>
+		<property name="com.jaspersoft.studio.field.label" value="total"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_servicio"/>
+	</field>
+	<field name="abono" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="os_abono"/>
+		<property name="com.jaspersoft.studio.field.label" value="abono"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_servicio"/>
+	</field>
+	<field name="saldo" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="os_saldo"/>
+		<property name="com.jaspersoft.studio.field.label" value="saldo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_servicio"/>
+	</field>
+	<field name="os_observaciones" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="os_observaciones"/>
+		<property name="com.jaspersoft.studio.field.label" value="os_observaciones"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_servicio"/>
+	</field>
+	<field name="examen" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="exa_descripcion"/>
+		<property name="com.jaspersoft.studio.field.label" value="examen"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="examen"/>
+	</field>
+	<field name="valor_examen" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="dos_exa_valor"/>
+		<property name="com.jaspersoft.studio.field.label" value="valor_examen"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_servicio_detalle"/>
+	</field>
+	<field name="cantidad" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="dos_exa_cantidad"/>
+		<property name="com.jaspersoft.studio.field.label" value="cantidad"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_servicio_detalle"/>
+	</field>
+	<field name="subtotal" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="subtotal"/>
+		<property name="com.jaspersoft.studio.field.label" value="subtotal"/>
+	</field>
+	<background splitType="Stretch"/>
+	<title height="100" splitType="Stretch">
+		<element kind="staticText" uuid="d7f85c32-c884-42d2-867f-ceaffe8f908e" x="0" y="10" width="570" height="30" fontSize="18.0" bold="true" hTextAlign="Center">
+			<text><![CDATA[FACTURA DE SERVICIO VETERINARIO]]></text>
+			<property name="com.jaspersoft.studio.unit.x" value="px"/>
+			<property name="com.jaspersoft.studio.unit.y" value="px"/>
+			<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</element>
+		<element kind="staticText" uuid="7327c59a-ea87-460e-9cba-71289d6997bf" x="0" y="45" width="570" height="25" fontSize="14.0" hTextAlign="Center">
+			<text><![CDATA[VetSoft v.1.0]]></text>
+			<property name="com.jaspersoft.studio.unit.x" value="px"/>
+			<property name="com.jaspersoft.studio.unit.y" value="px"/>
+			<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</element>
+		<element kind="staticText" uuid="42eeabff-4c49-4383-aa16-1e2560ae8643" x="20" y="73" width="100" height="20" bold="true">
+			<text><![CDATA[Factura No:]]></text>
+		</element>
+		<element kind="staticText" uuid="6ff31ab9-7847-427d-9ccb-e7f23f2f7af1" x="341" y="72" width="100" height="22" bold="true">
+			<text><![CDATA[Fecha:]]></text>
+		</element>
+		<element kind="textField" uuid="e746e3a2-96fa-4253-8be3-af54d94fe4a2" x="441" y="72" width="94" height="22" pattern="dd/MM/yyyy">
+			<expression><![CDATA[$F{os_fecha}]]></expression>
+		</element>
+		<element kind="textField" uuid="10d89d6c-74b0-4a66-80bf-eaf0bd61144e" x="120" y="73" width="100" height="20">
+			<expression><![CDATA[$F{os_id}]]></expression>
+		</element>
+		<element kind="image" uuid="2ce60636-dd8a-422d-b5a0-e192febeae67" x="20" y="13" width="45" height="27">
+			<expression><![CDATA["C:/Users/JHON/Documents/NetBeansProjects/Proyecto_Veterinario/src/Imagenes/logoPequeno.jpg"]]></expression>
+		</element>
+		<property name="com.jaspersoft.studio.unit.height" value="px"/>
+	</title>
+	<pageHeader height="80" splitType="Stretch">
+		<element kind="staticText" uuid="a7043083-edb5-4239-8760-7169db647399" x="20" y="0" width="54" height="20" bold="true">
+			<text><![CDATA[Veterinaria:]]></text>
+		</element>
+		<element kind="staticText" uuid="159e0b2e-07c2-4182-8ea9-28d776940183" x="20" y="20" width="54" height="18" bold="true">
+			<text><![CDATA[Veterinario:]]></text>
+		</element>
+		<element kind="staticText" uuid="463eb183-305e-4233-8e5f-f8cb55ce3652" x="20" y="38" width="54" height="22" bold="true">
+			<text><![CDATA[Propietario:]]></text>
+		</element>
+		<element kind="staticText" uuid="7aa7fe94-27d8-427c-8ed7-f1f5ca4864b3" x="20" y="60" width="54" height="20" bold="true">
+			<text><![CDATA[Mascota:]]></text>
+		</element>
+		<element kind="textField" uuid="edbc7485-f80e-4040-b351-bb860dd4c071" x="80" y="0" width="76" height="20">
+			<expression><![CDATA[$F{veterinaria}]]></expression>
+		</element>
+		<element kind="textField" uuid="aec84056-b26e-4157-beb3-7eee3d9b06d4" x="80" y="20" width="76" height="20">
+			<expression><![CDATA[$F{veterinario}]]></expression>
+		</element>
+		<element kind="textField" uuid="8c511a98-d441-4462-94f7-7b77f6fb3044" x="80" y="40" width="76" height="20">
+			<expression><![CDATA[$F{propietario}]]></expression>
+		</element>
+		<element kind="textField" uuid="73034138-f5e9-4594-a096-4347328d8370" x="80" y="60" width="76" height="20">
+			<expression><![CDATA[$F{mascota}]]></expression>
+		</element>
+		<property name="com.jaspersoft.studio.unit.height" value="px"/>
+	</pageHeader>
+	<columnHeader height="30" splitType="Stretch">
+		<element kind="staticText" uuid="09cf7c9f-1203-4b65-8587-78c5137318d4" x="20" y="5" width="220" height="21" bold="true">
+			<text><![CDATA[Examen]]></text>
+			<property name="com.jaspersoft.studio.unit.x" value="px"/>
+			<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			<box>
+				<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+			</box>
+		</element>
+		<element kind="staticText" uuid="7a296bc3-cb78-4aee-8f37-edd87f93d46b" x="240" y="5" width="80" height="21" bold="true" hTextAlign="Right">
+			<text><![CDATA[Valor Unit.]]></text>
+			<property name="com.jaspersoft.studio.unit.x" value="px"/>
+			<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			<box>
+				<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+			</box>
+		</element>
+		<element kind="staticText" uuid="f13a8aba-3bca-41eb-80ce-446fe417d74a" x="400" y="5" width="135" height="21" bold="true" hTextAlign="Right">
+			<text><![CDATA[Subtotal]]></text>
+			<property name="com.jaspersoft.studio.unit.x" value="px"/>
+			<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			<box>
+				<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+			</box>
+		</element>
+		<element kind="staticText" uuid="8c086ccc-a704-46a8-969d-3851f441f062" x="320" y="5" width="80" height="21" bold="true" hTextAlign="Center">
+			<text><![CDATA[Cantidad]]></text>
+			<property name="com.jaspersoft.studio.unit.x" value="px"/>
+			<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			<box>
+				<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+			</box>
+		</element>
+		<property name="com.jaspersoft.studio.unit.height" value="px"/>
+	</columnHeader>
+	<detail>
+		<band height="20">
+			<element kind="textField" uuid="af5ee603-15d0-4f3d-b7a7-9c3689ba5cd3" x="20" y="2" width="220" height="15">
+				<expression><![CDATA[$F{examen}]]></expression>
+				<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			</element>
+			<element kind="textField" uuid="ac56d985-7ef3-42f6-8682-dac14b664986" x="240" y="2" width="80" height="15" hTextAlign="Right">
+				<expression><![CDATA[$F{valor_examen}]]></expression>
+				<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			</element>
+			<element kind="textField" uuid="906e48ee-d113-45e2-ba30-caed29a70ea9" x="320" y="2" width="80" height="15" hTextAlign="Center">
+				<expression><![CDATA[$F{cantidad}]]></expression>
+				<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			</element>
+			<element kind="textField" uuid="acbb156d-5b2e-4902-8939-d7901d785997" x="400" y="2" width="135" height="15" hTextAlign="Right">
+				<expression><![CDATA[$F{subtotal}]]></expression>
+				<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			</element>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</detail>
+	<columnFooter>
+		<property name="com.jaspersoft.studio.unit.height" value="px"/>
+	</columnFooter>
+	<pageFooter height="30" splitType="Stretch">
+		<element kind="staticText" uuid="26305098-e065-45c6-b680-0ba310baa7dc" x="20" y="8" width="550" height="22" fontSize="10.0" hTextAlign="Center">
+			<text><![CDATA[Gracias por su confianza - VetSoft v.1.0]]></text>
+		</element>
+		<property name="com.jaspersoft.studio.unit.height" value="px"/>
+	</pageFooter>
+	<summary height="100" splitType="Stretch">
+		<element kind="staticText" uuid="b1671371-4ffd-42fb-808e-aa7de99f4c94" x="438" y="23" width="45" height="16" bold="true">
+			<text><![CDATA[TOTAL:]]></text>
+		</element>
+		<element kind="staticText" uuid="ef196e10-0dee-4694-b2ac-499da09d5c78" x="438" y="39" width="45" height="20" bold="true">
+			<text><![CDATA[ABONO:]]></text>
+		</element>
+		<element kind="staticText" uuid="71765bb3-ace7-48ae-b5d8-37357fbe028c" x="438" y="59" width="45" height="21" bold="true">
+			<text><![CDATA[SALDO:]]></text>
+		</element>
+		<element kind="textField" uuid="5e1bc0d7-7b66-4752-9bc2-0502f7a1abdd" x="486" y="23" width="49" height="16">
+			<expression><![CDATA[$F{total}]]></expression>
+		</element>
+		<element kind="textField" uuid="31c01055-aad2-447f-b4e3-d7d67a784d09" x="486" y="40" width="49" height="19">
+			<expression><![CDATA[$F{abono}]]></expression>
+		</element>
+		<element kind="textField" uuid="b6938831-ac9a-40c1-bda5-8de50523dff1" x="486" y="60" width="49" height="18">
+			<expression><![CDATA[$F{saldo}]]></expression>
+		</element>
+		<element kind="staticText" uuid="4cdb6824-67c9-43e5-bf99-6c8b757d25ac" x="20" y="17" width="100" height="22" bold="true">
+			<text><![CDATA[Observaciones:]]></text>
+			<property name="com.jaspersoft.studio.unit.x" value="px"/>
+			<property name="com.jaspersoft.studio.unit.y" value="px"/>
+		</element>
+		<element kind="textField" uuid="014d9034-d348-4da2-83f0-d73332d1fc61" stretchType="ContainerHeight" x="20" y="40" width="400" height="40">
+			<expression><![CDATA[$F{os_observaciones}]]></expression>
+			<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</element>
+		<property name="com.jaspersoft.studio.unit.height" value="px"/>
+	</summary>
+</jasperReport>
