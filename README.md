@@ -37,14 +37,14 @@ El sistema cubre el ciclo completo de atención: se registran la mascota y el ve
 
 ```
 1. Crear orden      Se selecciona veterinario y mascota, se agregan los exámenes
-                    y se registra el abono → la orden queda "En proceso".
+                    y se registra el abono la orden queda "En proceso".
 
 2. Consultar        Desde "Listar órdenes" se filtra y revisa el detalle de cada orden.
                     Las órdenes facturadas se resaltan en verde.
 
 3. Facturar         Se genera la factura (JasperReports) y, tras confirmar,
                     la orden pasa a estado "Facturado".
-                    ⚠ Una orden facturada no puede volver a facturarse.
+                    Una orden facturada no puede volver a facturarse.
 
 4. Exportar         El listado filtrado puede exportarse a PDF.
 ```
